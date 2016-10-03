@@ -205,6 +205,10 @@
 				includeHidden = false;
 			}
 
+			if (includeTabbablesOnly === undefined) {
+				includeTabbablesOnly = true;
+			}
+
 			var parentNode = D2L.Dom.getComposedParent(node);
 
 			while (parentNode) {
