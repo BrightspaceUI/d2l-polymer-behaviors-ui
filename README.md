@@ -55,6 +55,9 @@ D2L.Dom.Focus.getNextFocusable(element);
 // get the previous focusable child, sibling, etc.
 D2L.Dom.Focus.getPreviousFocusable(element);
 
+// get the nearest focusable ancestor
+D2L.Dom.Focus.getPreviousFocusableAncestor(element);
+
 // check is focusable (tabindex or white-listed elements)
 D2L.Dom.Focus.isFocusable(element);
 ```
