@@ -195,19 +195,49 @@
 
 		},
 
-		isFocusable: function(node, includeHidden) {
+		getPreviousFocusableAncestor: function(node, includeHidden, includeTabbablesOnly) {
+
+			if (!node) {
+				return null;
+			}
+
+			if (includeHidden === undefined) {
+				includeHidden = false;
+			}
+
+			var parentNode = D2L.Dom.getComposedParent(node);
+
+			while (parentNode) {
+
+				if (this.isFocusable(parentNode, includeHidden, includeTabbablesOnly)) {
+					return parentNode;
+				}
+
+				parentNode = D2L.Dom.getComposedParent(parentNode);
+			}
+
+			return null;
+
+		},
+
+		isFocusable: function(node, includeHidden, includeTabbablesOnly) {
 
 			if (!node || node.nodeType !== 1 || node.disabled) {
 				return false;
 			}
 
+			if (includeTabbablesOnly === undefined) {
+				includeTabbablesOnly = true;
+			}
+
 			var _isFocusable;
+			var _minTabIndex = includeTabbablesOnly ? 0 : -1;
 
 			// IE treats all nodes without tabindex explicitly set as having tabindex=0
 			if (node.getAttributeNode) {
 				var tabIndexAttr = node.getAttributeNode('tabindex');
 				if (tabIndexAttr && tabIndexAttr.specified) {
-					_isFocusable = (tabIndexAttr.value >= 0);
+					_isFocusable = (tabIndexAttr.value >= _minTabIndex);
 				}
 			}
 

@@ -86,10 +86,12 @@
 		<test-fixture id="focusableFixture">
 			<template>
 				<div>
-					<a></a>
-					<button></button>
-					some text node
-					<!-- some comment node -->
+					<div id="optionallyFocusable">
+						<a></a>
+						<button></button>
+						some text node
+						<!-- some comment node -->
+					</div>
 				</div>
 			</template>
 		</test-fixture>
@@ -241,9 +243,19 @@
 					expect(D2L.Dom.Focus.isFocusable(focusableFixture.querySelector('a'))).to.be.true;
 				});
 
-				it('returns false if tabindex=-1', function() {
+				it('returns false if tabindex=-1 and includeTabbablesOnly is undefined', function() {
 					focusableFixture.querySelector('a').setAttribute('tabindex', '-1');
 					expect(D2L.Dom.Focus.isFocusable(focusableFixture.querySelector('a'))).to.be.false;
+				});
+
+				it('returns false if tabindex=-1 and includeTabbablesOnly is true', function() {
+					focusableFixture.querySelector('a').setAttribute('tabindex', '-1');
+					expect(D2L.Dom.Focus.isFocusable(focusableFixture.querySelector('a'), null, true)).to.be.false;
+				});
+
+				it('returns true if tabindex=-1 and includedTabbablesOnly is false', function() {
+					focusableFixture.querySelector('a').setAttribute('tabindex', '-1');
+					expect(D2L.Dom.Focus.isFocusable(focusableFixture.querySelector('a'), null, false)).to.be.true;
 				});
 
 				it('returns false if not displayed', function() {
@@ -282,6 +294,29 @@
 				it('returns false for comment node', function() {
 					var commentNode = focusableFixture.querySelector('button').nextSibling.nextSibling;
 					expect(D2L.Dom.Focus.isFocusable(commentNode)).to.be.false;
+				});
+
+			});
+
+			describe('getPreviousFocusableAncestor', function() {
+
+				var focusableFixture;
+
+				beforeEach(function() {
+					focusableFixture = fixture('focusableFixture');
+				});
+
+				it('returns focusable div', function() {
+					var focusableDiv = focusableFixture.querySelector('#optionallyFocusable');
+
+					focusableDiv.setAttribute('tabindex', '-1');
+					expect(D2L.Dom.Focus.getPreviousFocusableAncestor(focusableFixture.querySelector('a'), false, false))
+						.to.equal(focusableDiv);
+				});
+
+				it('returns body when no ancestor focusable', function() {
+					expect(D2L.Dom.Focus.getPreviousFocusableAncestor(focusableFixture.querySelector('a'), false, false))
+						.to.equal(document.body);
 				});
 
 			});
