@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>d2l-dom tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+		<link rel="import" href="../d2l-publish-subscribe.html">
+	</head>
+	<body>
+    	<script>
+		describe('d2l-publish-subscribe', function() {
+			var channel = 'test.channel',
+				message = 'Test message';
+
+			var emptySubscriptionHandler = function() {
+				return undefined; 
+			}
+
+			beforeEach(function() {
+                window.D2L.PublishSubscribe._channels = {};
+			});
+
+			describe('subscriptions', function() {
+
+				it('adds a subscription', function() {
+					D2L.PublishSubscribe.subscribe(channel, emptySubscriptionHandler);
+
+					expect(D2L.PublishSubscribe._channels.hasOwnProperty(channel))
+                        .to.be.true;
+
+					expect(D2L.PublishSubscribe._channels[channel].length)
+                        .to.equal(1);
+
+					expect(D2L.PublishSubscribe._channels[channel][0])
+                        .to.equal(emptySubscriptionHandler);
+				});
+
+				it('removes a subscription', function() {
+                    
+					D2L.PublishSubscribe.subscribe(channel, emptySubscriptionHandler);
+
+					expect(D2L.PublishSubscribe._channels.hasOwnProperty(channel))
+                        .to.be.true;
+					
+					D2L.PublishSubscribe.unsubscribe(channel, emptySubscriptionHandler);
+
+					expect(D2L.PublishSubscribe._channels.hasOwnProperty(channel))
+                        .to.be.false;
+				});
+
+				it ('only adds one subscription for the same handler', function(){
+					for(var i = 0; i < 5; i++) {
+						D2L.PublishSubscribe.subscribe(channel, emptySubscriptionHandler);
+					}
+
+					expect(D2L.PublishSubscribe._channels[channel].length)
+                        .to.equal(1);
+				});
+				
+				it ('clears a channel of subscriptions', function(){
+					D2L.PublishSubscribe.subscribe(channel, emptySubscriptionHandler);
+
+					expect(D2L.PublishSubscribe._channels.hasOwnProperty(channel))
+                        .to.be.true;
+
+					D2L.PublishSubscribe.clearSubscriptions(channel);
+
+					expect(D2L.PublishSubscribe._channels.hasOwnProperty(channel))
+                        .to.be.false;
+				});
+
+			});
+
+            describe('publish', function() {
+
+				it('publishes a message', function(done) {
+
+					var subscriptionHandler = function(inMessage) {
+						expect(inMessage === message);
+						done();
+					};
+
+					D2L.PublishSubscribe.subscribe(channel, subscriptionHandler);
+					D2L.PublishSubscribe.publish(channel, message);					
+				
+				});
+
+			});
+
+		});
+
+		</script>
+	</body>
+</html>

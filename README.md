@@ -77,6 +77,23 @@ D2L.Dom.Visibility.isVisible(element);
 D2L.Id.getUniqueId();
 ```
 
+**D2L.PublishSubscribe**
+
+```javascript
+// subscribe to a channel
+D2L.PublishSubscribe.subscribe('my.channel.hierarchy', onMessageCallback);
+
+// unsubscribe from a channel
+D2L.PublishSubscribe.unsubscribe('my.channel.hierarchy', onMessageCallback);
+
+// publish a message to a channel (where message is of any type)
+D2L.PublishSubscribe.publish('my.channel.hierarchy', message);
+
+// clear all subscriptions from a channel
+D2L.PublishSubscribe.clearSubscriptions('my.channel.hierarchy');
+
+```
+
 ### Usage in Production
 
 In production, it's recommended to use a build tool like [Vulcanize](https://github.com/Polymer/vulcanize) to combine all your web components into a single import file. [More from the Polymer Docs: Optimize for Production](https://www.polymer-project.org/1.0/tools/optimize-for-production.html)...
