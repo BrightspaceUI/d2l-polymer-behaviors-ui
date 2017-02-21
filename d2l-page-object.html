@@ -1,0 +1,29 @@
+<script>
+(function() {
+	'use strict';
+
+	var PageObject = {
+
+		find: function(name) {
+
+			var parts = name.split('.');
+			var func = window;
+
+			for (var i = 0; i < parts.length; i++) {
+				func = func[parts[i]];
+				if (!func) {
+					break;
+				}
+			}
+
+			return func;
+
+		}
+
+	};
+
+	window.D2L = window.D2L || {};
+	window.D2L.PageObject = PageObject;
+
+})();
+</script>
