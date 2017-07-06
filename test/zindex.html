@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>d2l-zindex tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+		<link rel="import" href="../d2l-zindex.html">
+	</head>
+	<body>
+
+		<script>
+
+			describe('d2l-zindex', function() {
+
+				describe('getZIndex', function() {
+
+					beforeEach(function() {
+						D2L.ZIndex._zIndex = 0;
+					});
+
+					it('gets a larger value each time called', function() {
+						expect(D2L.ZIndex.getZIndex()).not.to.equal(D2L.ZIndex.getZIndex());
+					});
+
+					it('gets the specified minimum z-index value if it is larger than the current', function() {
+						expect(D2L.ZIndex.getZIndex(1000)).to.equal(1000);
+					});
+
+					it('gets the calculated z-index value if it is larger than the specified minimum', function() {
+						D2L.ZIndex.getZIndex(500);
+						expect(D2L.ZIndex.getZIndex(100)).to.equal(501);
+					});
+
+				});
+
+			});
+
+		</script>
+	</body>
+</html>

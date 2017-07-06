@@ -1,0 +1,26 @@
+<script>
+(function() {
+	'use strict';
+
+	var ZIndex = {
+
+		_zIndex: 0,
+
+		getZIndex: function(minZIndex) {
+
+			this._zIndex += 1;
+			if (minZIndex && this._zIndex < minZIndex) {
+				this._zIndex = minZIndex;
+			}
+
+			return this._zIndex;
+
+		}
+
+	};
+
+	window.D2L = window.D2L || {};
+	window.D2L.ZIndex = ZIndex;
+
+})();
+</script>
