@@ -5,7 +5,19 @@
 
 	/** @polymerBehavior */
 	D2L.PolymerBehaviors.FocusableBehavior = {
+		properties: {
+			/**
+			 * Fired when the focusable receives focus.
+			 *
+			 * @event focus
+			*/
 
+			/**
+			 * Fired when the focusable loses focus.
+			 *
+			 * @event blur
+			*/
+		},
 		attached: function() {
 			var elem = Polymer.dom(this.root).querySelector('.d2l-focusable');
 			if (!elem) return;
