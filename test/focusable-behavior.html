@@ -11,7 +11,6 @@
 		<link rel="import" href="../d2l-dom-focus.html">
 	</head>
 	<body>
-
 		<dom-module id="d2l-focusable-test">
 			<template>
 				<div>
@@ -63,7 +62,39 @@
 				expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(simpleFixture.getShadow2());
 			});
 
-			it('triggers the blur event when focus method is called', function(done) {
+			it('triggers the focus event when focus method is called on custom element', function(done) {
+				simpleFixture.addEventListener('focus', function() {
+					done();
+				});
+				simpleFixture.focus();
+			});
+
+			it('triggers the focus event when focus method is called on focusable element', function(done) {
+				simpleFixture.addEventListener('focus', function() {
+					done();
+				});
+				simpleFixture.getShadow2().focus();
+			});
+
+			it('triggers the blur event when custom element is blurred', function(done) {
+				simpleFixture.focus();
+				simpleFixture.addEventListener('blur', function() {
+					done();
+				});
+				var outside = simpleFixture.querySelector('#light1');
+				outside.focus();
+			});
+
+			it('triggers the blur event when custom element focusable element is blurred', function(done) {
+				simpleFixture.addEventListener('blur', function() {
+					done();
+				});
+				simpleFixture.getShadow2().focus();
+				var outside = simpleFixture.querySelector('#light1');
+				outside.focus();
+			});
+
+			it('triggers the blur event on light DOM element when focus method is called on custom element', function(done) {
 				var startingElement = simpleFixture.querySelector('#light1');
 				startingElement.focus();
 				startingElement.addEventListener('blur', function() {
@@ -71,19 +102,6 @@
 				});
 				simpleFixture.focus();
 			});
-
-			it('triggers the focus event when focus method is called', function(done) {
-				if (!Polymer.Element && !Polymer.Settings.useShadow) {
-					// Note: focus event will not be triggered with using Polymer 1 + shady.  If necessary,
-					// we can raise a custom event. For now, keeping this bare-bones.
-					done();
-				}
-				simpleFixture.addEventListener('focus', function() {
-					done();
-				});
-				simpleFixture.focus();
-			});
-
 		});
 
 		</script>
