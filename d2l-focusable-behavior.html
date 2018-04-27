@@ -5,6 +5,7 @@
 
 	/** @polymerBehavior */
 	D2L.PolymerBehaviors.FocusableBehavior = {
+
 		properties: {
 			/**
 			 * Fired when the focusable receives focus.
@@ -18,18 +19,24 @@
 			 * @event blur
 			*/
 		},
+
+		ready: function() {
+			this._focusHandler = this._handleFocus.bind(this);
+			this._blurHandler = this._handleBlur.bind(this);
+		},
+
 		attached: function() {
 			var elem = Polymer.dom(this.root).querySelector('.d2l-focusable');
 			if (!elem) return;
-			elem.addEventListener('focus', this._handleFocus.bind(this));
-			elem.addEventListener('blur', this._handleBlur.bind(this));
+			elem.addEventListener('focus', this._focusHandler);
+			elem.addEventListener('blur', this._blurHandler);
 		},
 
 		detached: function() {
 			var elem = Polymer.dom(this.root).querySelector('.d2l-focusable');
 			if (!elem) return;
-			elem.removeEventListener('focus', this._handleFocus.bind(this));
-			elem.removeEventListener('blur', this._handleBlur.bind(this));
+			elem.removeEventListener('focus', this._focusHandler);
+			elem.removeEventListener('blur', this._blurHandler);
 		},
 
 		/**
