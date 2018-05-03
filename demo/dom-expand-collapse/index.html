@@ -1,0 +1,59 @@
+<html>
+<head>
+	<title>D2L DOM Expand/Collapse</title>
+	<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+	<link rel="stylesheet" href="../demo-styles.css">
+	<link rel="import" href="../../../polymer/polymer.html">
+	<link rel="import" href="../../d2l-dom-expand-collapse.html">
+	<style>
+		.fixture {
+			box-sizing: border-box;
+			border: 1px solid black;
+			margin-top: 20px;
+		}
+		.fixture > div {
+			padding: 50px 20px;
+		}
+		.d2l-hidden {
+			display: none !important;
+		}
+	</style>
+</head>
+<body unresolved>
+
+	<h1>d2l-dom-expand-collapse</h1>
+
+	<div style="width: 60%;">
+		<button onclick="collapse('container1');">Collapse</button>
+		<button onclick="expand('container1');">Expand</button>
+		<div id="container1" class="fixture"><div>
+			Lorem ipsum dolor sit amet, scelerisque consectetuer lacus quam lectus orci, suscipit at duis, felis ligula pellentesque, dapibus mauris natoque eros sed, suspendisse wisi non. Non dictum turpis magna elit in eros, nostra tempor vulputate malesuada. Arcu imperdiet amet est massa. Sociis phasellus aliquip vel vestibulum rutrum magnis, fusce metus class mi lorem dolor integer, in leo. Imperdiet consequat, urna ipsum ipsum mauris, vel pellentesque rutrum in, metus cras etiam, leo ut. Luctus aliquet, urna condimentum nulla in, et libero. Quis ut vitae. Morbi in at est et, quod ullamcorper feugiat diam lacinia, in egestas lorem ornare. Cursus id nec ante, amet quam in at nibh, primis eget ac consectetuer massa blandit. Vivamus posuere. Porta tempora mauris et, nullam corporis, wisi luctus vestibulum neque nunc, risus venenatis cras libero morbi.
+
+			Ut vel sed, libero congue condimentum. Libero at dolor netus metus placerat, dui varius consectetuer tempus. Mi posuere volutpat elit et et, dignissim augue pulvinar wisi, mauris elementum convallis sed nulla magna dolor, nunc dis nulla amet, elit in gravida mi dui molestie. A feugiat neque pede morbi, nullam in tellus vel proin natoque eget. Mauris non venenatis, erat vel. Erat dapibus massa nulla facilisi. Ac ac per, malesuada varius. Lorem sociosqu ipsum. Donec quis. Nibh urna sem luctus cras, tortor condimentum, molestie lorem ut est amet et augue, lorem id fringilla. Lacinia neque, lacinia orci, nisl nunc faucibus.
+		</div></div>
+	</div>
+
+	<script>
+
+	function expand(id) {
+		D2L.Dom.ExpandCollapse.expand(document.getElementById(id))
+			.then(function() {
+				console.log('expanded!');
+			}).catch(function(reason) {
+				console.log(reason);
+			});
+	}
+
+
+	function collapse(id) {
+		D2L.Dom.ExpandCollapse.collapse(document.getElementById(id))
+			.then(function() {
+				console.log('collapsed!');
+			}).catch(function(reason) {
+				console.log(reason);
+			});
+	}
+
+	</script>
+</body>
+</html>
