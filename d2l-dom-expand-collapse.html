@@ -87,8 +87,10 @@
 
 						node.style.transition = D2L.Dom.ExpandCollapse.DEFAULT_TRANSITION;
 
-						requestAnimationFrame(function() {
-							node.style.height = '0px';
+						fastdom.measure(function() {
+							fastdom.mutate(function() {
+								node.style.height = '0px';
+							});
 						});
 
 					});
