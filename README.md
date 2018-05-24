@@ -116,33 +116,34 @@ The `FocusableArrowKeysBehavior` can be used for managing focus with the arrow k
 
 // include the behavior
 behaviors: [
-	D2L.PolymerBehaviors.FocusableArrowKeysBehavior
+  D2L.PolymerBehaviors.FocusableArrowKeysBehavior
 ],
 
 attached: function() {
-	Polymer.RenderStatus.afterNextRender(this, function() {
+  Polymer.RenderStatus.afterNextRender(this, function() {
 
-		// indicate the direction (default is leftright)
-		this..arrowKeyFocusablesDirection = 'updown';
+    // indicate the direction (default is leftright)
+    this..arrowKeyFocusablesDirection = 'updown';
 
-		// required container element of focusables (used to listen for key events)
-		this.arrowKeyFocusablesContainer = container;
+    // required container element of focusables (used to listen for key events)
+    this.arrowKeyFocusablesContainer = container;
 
-		// required provider method that can return list of focusables - possible async
-		this.arrowKeyFocusablesProvider = function() {
+    // required provider method that can return list of focusables - possible async
+    this.arrowKeyFocusablesProvider = function() {
 
-			// simple case
-			return Promise.resolve(focusables);
+      // simple case
+      return Promise.resolve(focusables);
 
-			// other cases (ex. check visibility when querying focusables)
-			return new Promise(function(resolve) {
-				fastdom.measure(function() {
-					// ...
-					resolve(focusables);
-				});
-			});
-		}.bind(this);
-	});
+      // other cases (ex. check visibility when querying focusables)
+      return new Promise(function(resolve) {
+        fastdom.measure(function() {
+          // ...
+          resolve(focusables);
+        });
+      });
+
+    }.bind(this);
+  });
 }
 ```
 
