@@ -123,7 +123,7 @@ attached: function() {
   Polymer.RenderStatus.afterNextRender(this, function() {
 
     // indicate the direction (default is leftright)
-    this..arrowKeyFocusablesDirection = 'updown';
+    this.arrowKeyFocusablesDirection = 'updown';
 
     // required container element of focusables (used to listen for key events)
     this.arrowKeyFocusablesContainer = container;
