@@ -1,0 +1,146 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-fastdom-import/fastdom.html">
+
+<script>
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+
+	/** @polymerBehavior */
+	D2L.PolymerBehaviors.FocusableArrowKeysBehavior = {
+
+		properties: {
+
+			arrowKeyFocusablesContainer: {
+				type: Object,
+				observer: '__handleArrowKeyFocusablesContainer',
+			},
+
+			arrowKeyFocusablesProvider: {
+				type: Object
+			},
+
+			arrowKeyFocusablesDirection: {
+				type: String,
+				value: 'leftright'
+			}
+
+		},
+
+		__keyCodes: {
+			END: 35,
+			HOME: 36,
+			LEFT: 37,
+			UP: 38,
+			RIGHT: 39,
+			DOWN: 40
+		},
+
+		ready: function() {
+			this.__handleKeyDown = this.__handleKeyDown.bind(this);
+		},
+
+		detached: function() {
+			this.arrowKeyFocusablesContainer = null;
+			this.arrowKeyFocusablesProvider = null;
+		},
+
+		__focusFirst: function() {
+			if (!this.arrowKeyFocusablesProvider) {
+				Promise.reject('No focusables provider.');
+			}
+			return this.arrowKeyFocusablesProvider().then(
+				function(elems) {
+					if (elems && elems.length > 0) fastdom.mutate(function() { elems[0].focus(); });
+				}
+			);
+		},
+
+		__focusLast: function() {
+			if (!this.arrowKeyFocusablesProvider) {
+				Promise.reject('No focusables provider.');
+			}
+			return this.arrowKeyFocusablesProvider().then(
+				function(elems) {
+					if (elems && elems.length > 0) fastdom.mutate(function() { elems[elems.length - 1].focus(); });
+				}
+			);
+		},
+
+		__focusNext: function(elem) {
+			if (!this.arrowKeyFocusablesProvider) {
+				Promise.reject('No focusables provider.');
+			}
+			return this.arrowKeyFocusablesProvider().then(
+				function(elems) {
+					var next = this.__tryGetNextFocusable(elems, elem);
+					if (next) fastdom.mutate(function() { next.focus(); });
+				}.bind(this)
+			);
+		},
+
+		__focusPrevious: function(elem) {
+			if (!this.arrowKeyFocusablesProvider) {
+				Promise.reject('No focusables provider.');
+			}
+			return this.arrowKeyFocusablesProvider().then(
+				function(elems) {
+					var previous = this.__tryGetPreviousFocusable(elems, elem);
+					if (previous) fastdom.mutate(function() { previous.focus(); });
+				}.bind(this)
+			);
+		},
+
+		__handleArrowKeyFocusablesContainer: function(newElem, oldElem) {
+			if (oldElem) {
+				oldElem.removeEventListener('keydown', this.__handleKeyDown);
+			}
+			if (!newElem) {
+				return;
+			}
+			newElem.addEventListener('keydown', this.__handleKeyDown);
+		},
+
+		__handleKeyDown: function(e) {
+			if (this.arrowKeyFocusablesDirection === 'leftright' && e.keyCode === this.__keyCodes.LEFT) {
+				this.__focusPrevious(e.target);
+			} else if (this.arrowKeyFocusablesDirection === 'leftright' && e.keyCode === this.__keyCodes.RIGHT) {
+				this.__focusNext(e.target);
+			} else if (this.arrowKeyFocusablesDirection === 'updown' && e.keyCode === this.__keyCodes.UP) {
+				this.__focusPrevious(e.target);
+			} else if (this.arrowKeyFocusablesDirection === 'updown' && e.keyCode === this.__keyCodes.DOWN) {
+				this.__focusNext(e.target);
+			} else if (e.keyCode === this.__keyCodes.HOME) {
+				this.__focusFirst();
+			} else if (e.keyCode === this.__keyCodes.END) {
+				this.__focusLast();
+			} else {
+				return;
+			}
+			e.preventDefault();
+		},
+
+		__tryGetNextFocusable: function(elems, elem) {
+			if (!elems || elems.length === 0) {
+				return;
+			}
+			var index = elems.indexOf(elem);
+			if (index === elems.length - 1) {
+				return elems[0];
+			}
+			return elems[index + 1];
+		},
+
+		__tryGetPreviousFocusable: function(elems, elem) {
+			if (!elems || elems.length === 0) {
+				return;
+			}
+			var index = elems.indexOf(elem);
+			if (index === 0) {
+				return elems[elems.length - 1];
+			}
+			return elems[index - 1];
+		}
+
+	};
+
+</script>

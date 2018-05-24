@@ -101,6 +101,51 @@ D2L.Gestures.Swipe.unregister(element);
 D2L.Id.getUniqueId();
 ```
 
+#### Behaviors
+
+**D2L.PolymerBehaviors.FocusableArrowKeysBehavior**
+
+The `FocusableArrowKeysBehavior` can be used for managing focus with the arrow keys.
+
+* right/down - focuses next element, or first if currently at the end
+* left/up - focuses previous element, or last if currently at beginning
+* home - focuses first
+* end - focuses last
+
+```javascript
+
+// include the behavior
+behaviors: [
+	D2L.PolymerBehaviors.FocusableArrowKeysBehavior
+],
+
+attached: function() {
+	Polymer.RenderStatus.afterNextRender(this, function() {
+
+		// indicate the direction (default is leftright)
+		this..arrowKeyFocusablesDirection = 'updown';
+
+		// required container element of focusables (used to listen for key events)
+		this.arrowKeyFocusablesContainer = container;
+
+		// required provider method that can return list of focusables - possible async
+		this.arrowKeyFocusablesProvider = function() {
+
+			// simple case
+			return Promise.resolve(focusables);
+
+			// other cases (ex. check visibility when querying focusables)
+			return new Promise(function(resolve) {
+				fastdom.measure(function() {
+					// ...
+					resolve(focusables);
+				});
+			});
+		}.bind(this);
+	});
+}
+```
+
 ### Usage in Production
 
 In production, it's recommended to use a build tool like [Vulcanize](https://github.com/Polymer/vulcanize) to combine all your web components into a single import file. [More from the Polymer Docs: Optimize for Production](https://www.polymer-project.org/1.0/tools/optimize-for-production.html)...
