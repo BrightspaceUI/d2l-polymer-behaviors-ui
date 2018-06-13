@@ -63,6 +63,12 @@
 					(function(i) {
 
 						it(keyInteractions[i].name, function(done) {
+							simpleFixture.arrowKeyFocusablesOnBeforeFocus = function(elem) {
+								return new Promise(function(resolve) {
+									expect(elem).to.equal(focusables[keyInteractions[i].endIndex]);
+									resolve();
+								})
+							};
 							focusables[keyInteractions[i].startIndex].focus();
 							focusables[keyInteractions[i].endIndex].addEventListener('focus', function() {
 								expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteractions[i].endIndex]);
