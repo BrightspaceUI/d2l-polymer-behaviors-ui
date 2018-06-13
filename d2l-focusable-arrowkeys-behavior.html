@@ -15,6 +15,10 @@
 				observer: '__handleArrowKeyFocusablesContainer',
 			},
 
+			arrowKeyFocusablesOnBeforeFocus: {
+				type: Object
+			},
+
 			arrowKeyFocusablesProvider: {
 				type: Object
 			},
@@ -42,6 +46,19 @@
 		detached: function() {
 			this.arrowKeyFocusablesContainer = null;
 			this.arrowKeyFocusablesProvider = null;
+			this.arrowKeyFocusablesOnBeforeFocus = null;
+		},
+
+		__focus: function(elem) {
+			if (elem) {
+				if (this.arrowKeyFocusablesOnBeforeFocus) {
+					this.arrowKeyFocusablesOnBeforeFocus(elem).then(function() {
+						fastdom.mutate(function() { elem.focus(); });
+					});
+				} else {
+					fastdom.mutate(function() { elem.focus(); });
+				}
+			}
 		},
 
 		__focusFirst: function() {
@@ -50,8 +67,10 @@
 			}
 			return this.arrowKeyFocusablesProvider().then(
 				function(elems) {
-					if (elems && elems.length > 0) fastdom.mutate(function() { elems[0].focus(); });
-				}
+					if (elems && elems.length > 0) {
+						this.__focus(elems[0]);
+					}
+				}.bind(this)
 			);
 		},
 
@@ -61,8 +80,10 @@
 			}
 			return this.arrowKeyFocusablesProvider().then(
 				function(elems) {
-					if (elems && elems.length > 0) fastdom.mutate(function() { elems[elems.length - 1].focus(); });
-				}
+					if (elems && elems.length > 0) {
+						this.__focus(elems[elems.length - 1]);
+					}
+				}.bind(this)
 			);
 		},
 
@@ -73,7 +94,7 @@
 			return this.arrowKeyFocusablesProvider().then(
 				function(elems) {
 					var next = this.__tryGetNextFocusable(elems, elem);
-					if (next) fastdom.mutate(function() { next.focus(); });
+					this.__focus(next);
 				}.bind(this)
 			);
 		},
@@ -85,7 +106,7 @@
 			return this.arrowKeyFocusablesProvider().then(
 				function(elems) {
 					var previous = this.__tryGetPreviousFocusable(elems, elem);
-					if (previous) fastdom.mutate(function() { previous.focus(); });
+					this.__focus(previous);
 				}.bind(this)
 			);
 		},
