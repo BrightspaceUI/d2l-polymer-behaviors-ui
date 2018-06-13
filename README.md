@@ -142,7 +142,16 @@ attached: function() {
         });
       });
 
-    }.bind(this);
+    };
+
+    // optional callback before focus is applied
+    this.arrowKeyFocusablesOnBeforeFocus = function(elem) {
+        return new Promise(function(resolve) {
+            // do some stuff
+            resolve();
+        });
+    };
+		
   });
 }
 ```
