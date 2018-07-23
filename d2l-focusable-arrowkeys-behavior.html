@@ -122,10 +122,23 @@
 		},
 
 		__handleKeyDown: function(e) {
+			var target = e.target;
 			if (this.arrowKeyFocusablesDirection === 'leftright' && e.keyCode === this.__keyCodes.LEFT) {
-				this.__focusPrevious(e.target);
+				fastdom.measure(function() {
+					if (getComputedStyle(this).direction === 'rtl') {
+						this.__focusNext(target);
+					} else {
+						this.__focusPrevious(target);
+					}
+				}.bind(this));
 			} else if (this.arrowKeyFocusablesDirection === 'leftright' && e.keyCode === this.__keyCodes.RIGHT) {
-				this.__focusNext(e.target);
+				fastdom.measure(function() {
+					if (getComputedStyle(this).direction === 'rtl') {
+						this.__focusPrevious(target);
+					} else {
+						this.__focusNext(target);
+					}
+				}.bind(this));
 			} else if (this.arrowKeyFocusablesDirection === 'updown' && e.keyCode === this.__keyCodes.UP) {
 				this.__focusPrevious(e.target);
 			} else if (this.arrowKeyFocusablesDirection === 'updown' && e.keyCode === this.__keyCodes.DOWN) {

@@ -42,19 +42,19 @@
 			</template>
 		</test-fixture>
 
+		<div dir="rtl">
+			<test-fixture id="simpleFixtureRtl">
+				<template>
+					<d2l-focusable-arrowkeys-test></d2l-focusable-arrowkeys-test>
+				</template>
+			</test-fixture>
+		</div>
+
 		<script>
 
 		describe('d2l-focusable-arrowkeys-behavior', function() {
 
 			var simpleFixture, focusables;
-
-			beforeEach(function(done) {
-				simpleFixture = fixture('simpleFixture');
-				simpleFixture.arrowKeyFocusablesProvider().then(function(result) {
-					focusables = result;
-					done();
-				});
-			});
 
 			var testKeyInteractions = function(keyInteractions) {
 
@@ -83,34 +83,71 @@
 
 			};
 
-			describe('left-right', function() {
+			describe('ltr', function() {
 
-				testKeyInteractions([
-					{ name: 'focuses on next focusable when Right arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 39 },
-					{ name: 'focuses on previous focusable when Left arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 37 },
-					{ name: 'focuses on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 39 },
-					{ name: 'focuses on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 37 },
-					{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
-					{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
-				]);
+				beforeEach(function(done) {
+					simpleFixture = fixture('simpleFixture');
+					simpleFixture.arrowKeyFocusablesProvider().then(function(result) {
+						focusables = result;
+						done();
+					});
+				});
+
+				describe('left-right', function() {
+
+					testKeyInteractions([
+						{ name: 'focuses on next focusable when Right arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 39 },
+						{ name: 'focuses on previous focusable when Left arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 37 },
+						{ name: 'focuses on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 39 },
+						{ name: 'focuses on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 37 },
+						{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
+						{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+					]);
+
+				});
+
+				describe('up-down', function() {
+
+					beforeEach(function(done) {
+						simpleFixture.arrowKeyFocusablesDirection = 'updown';
+						done();
+					});
+
+					testKeyInteractions([
+						{ name: 'focuses on next focusable when Down arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 40 },
+						{ name: 'focuses on previous focusable when Up arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 38 },
+						{ name: 'focuses on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 40 },
+						{ name: 'focuses on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 38 },
+						{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
+						{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+					]);
+
+				});
 
 			});
 
-			describe('up-down', function() {
+			describe('rtl', function() {
 
 				beforeEach(function(done) {
-					simpleFixture.arrowKeyFocusablesDirection = 'updown';
-					done();
+					simpleFixture = fixture('simpleFixtureRtl');
+					simpleFixture.arrowKeyFocusablesProvider().then(function(result) {
+						focusables = result;
+						done();
+					});
 				});
 
-				testKeyInteractions([
-					{ name: 'focuses on next focusable when Down arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 40 },
-					{ name: 'focuses on previous focusable when Up arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 38 },
-					{ name: 'focuses on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 40 },
-					{ name: 'focuses on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 38 },
-					{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
-					{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
-				]);
+				describe('left-right', function() {
+
+					testKeyInteractions([
+						{ name: 'focuses on previous focusable when Right arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 39 },
+						{ name: 'focuses on next focusable when Left arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 37 },
+						{ name: 'focuses on first focusable when Left arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 37 },
+						{ name: 'focuses on last focusable when Right arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 39 },
+						{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
+						{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+					]);
+
+				});
 
 			});
 
