@@ -1,0 +1,119 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="d2l-dom.html">
+<link rel="import" href="../d2l-fastdom-import/fastdom.html">
+
+<script>
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+
+	/** @polymerBehavior */
+	D2L.PolymerBehaviors.VisibleOnAncestorBehavior = {
+
+		properties: {
+
+			/**
+			 * Whether the element is only visible when hovered or focus is within ancestor with 'd2l-visible-on-ancestor-target'.
+			 */
+			visibleOnAncestor: {
+				type: Boolean,
+				reflectToAttribute: true
+			}
+
+		},
+
+		attached: function() {
+
+			if (!this.visibleOnAncestor) return;
+			this.__voaTarget = D2L.Dom.findComposedAncestor(this, function(node) {
+				if (!node || node.nodeType !== 1) return false;
+				return (node.classList.contains('d2l-visible-on-ancestor-target'));
+			});
+			if (!this.__voaTarget) return;
+
+			this.__voaHandleBlur = this.__voaHandleBlur.bind(this);
+			this.__voaHandleFocus = this.__voaHandleFocus.bind(this);
+			this.__voaHandleMouseEnter = this.__voaHandleMouseEnter.bind(this);
+			this.__voaHandleMouseLeave = this.__voaHandleMouseLeave.bind(this);
+			this.__voaHandleHideEnd = this.__voaHandleHideEnd.bind(this);
+
+			this.__voaTarget.addEventListener('focus', this.__voaHandleFocus, true);
+			this.__voaTarget.addEventListener('blur', this.__voaHandleBlur, true);
+			this.__voaTarget.addEventListener('mouseenter', this.__voaHandleMouseEnter);
+			this.__voaTarget.addEventListener('mouseleave', this.__voaHandleMouseLeave);
+
+			this.style.transition = 'transform 200ms ease-out, opacity 200ms ease-out';
+			fastdom.mutate(function() {
+				this.style.transform = 'translateY(-10px)';
+				this.style.opacity = '0';
+				this.style.display = 'none';
+			}.bind(this));
+
+		},
+
+		detached: function() {
+			if (!this.__voaTarget) return;
+			this.__voaTarget.removeEventListener('focus', this.__voaHandleFocus, true);
+			this.__voaTarget.removeEventListener('blur', this.__voaHandleBlur, true);
+			this.__voaTarget.removeEventListener('mouseenter', this.__voaHandleMouseEnter);
+			this.__voaTarget.removeEventListener('mouseleave', this.__voaHandleMouseLeave);
+			this.__voaTarget = null;
+		},
+
+		__voaHandleHideEnd: function(e) {
+			if (e.propertyName !== 'transform') {
+				return;
+			}
+			this.removeEventListener('transitionend', this.__voaHandleHideEnd);
+			fastdom.mutate(function() {
+				this.style.display = 'none';
+			}.bind(this));
+		},
+
+		__voaHandleFocus: function() {
+			this.__voaFocusIn = true;
+			this.__voaShow();
+		},
+
+		__voaHandleBlur: function(e) {
+			if (D2L.Dom.isComposedAncestor(this.__voaTarget, e.relatedTarget)) {
+				return;
+			}
+			this.__voaFocusIn = false;
+			this.__voaHide();
+		},
+
+		__voaHandleMouseEnter: function() {
+			this.__voaMouseOver = true;
+			this.__voaShow();
+		},
+
+		__voaHandleMouseLeave: function() {
+			this.__voaMouseOver = false;
+			this.__voaHide();
+		},
+
+		__voaHide: function() {
+			if (this.__voaFocusIn || this.__voaMouseOver) return;
+			fastdom.mutate(function() {
+				this.addEventListener('transitionend', this.__voaHandleHideEnd);
+				this.style.transform = 'translateY(-10px)';
+				this.style.opacity = '0';
+			}.bind(this));
+		},
+
+		__voaShow: function() {
+			this.removeEventListener('transitionend', this.__voaHandleHideEnd);
+			fastdom.mutate(function() {
+				this.style.display = '';
+				fastdom.measure(function() {
+					fastdom.mutate(function() {
+						this.style.transform = 'translateY(0)';
+						this.style.opacity = '1';
+					}.bind(this));
+				}.bind(this));
+			}.bind(this));
+		}
+
+	};
+
+</script>
