@@ -84,7 +84,7 @@
 		__voaHandleVisibleOnAncestor: function(newValue, oldValue) {
 			if (newValue) {
 				this.__voaInit();
-			} else if(oldValue) {
+			} else if (oldValue) {
 				this.__voaUninit();
 			}
 		},
@@ -93,7 +93,7 @@
 			if (this.__voaFocusIn || this.__voaMouseOver) return;
 			fastdom.mutate(function() {
 				this.addEventListener('transitionend', this.__voaHandleHideEnd);
-				this.setAttribute('d2l-visible-on-ancestor-transition','d2l-visible-on-ancestor-transition');
+				this.setAttribute('d2l-visible-on-ancestor-transition', 'd2l-visible-on-ancestor-transition');
 				this.setAttribute('d2l-visible-on-ancestor-hide', 'd2l-visible-on-ancestor-hide');
 				this.removeAttribute('d2l-visible-on-ancestor-show');
 			}.bind(this));
@@ -137,7 +137,7 @@
 			this.removeEventListener('transitionend', this.__voaHandleHideEnd);
 			fastdom.mutate(function() {
 				this.setAttribute('d2l-visible-on-ancestor-show', 'd2l-visible-on-ancestor-show');
-				this.setAttribute('d2l-visible-on-ancestor-transition','d2l-visible-on-ancestor-transition');
+				this.setAttribute('d2l-visible-on-ancestor-transition', 'd2l-visible-on-ancestor-transition');
 				this.removeAttribute('d2l-visible-on-ancestor-hide');
 			}.bind(this));
 		},
