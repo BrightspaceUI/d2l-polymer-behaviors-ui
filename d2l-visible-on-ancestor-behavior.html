@@ -2,7 +2,29 @@
 <link rel="import" href="d2l-dom.html">
 <link rel="import" href="../d2l-fastdom-import/fastdom.html">
 
+<dom-module id="d2l-visible-on-ancestor-styles">
+	<template>
+		<style>
+			:host {
+				--d2l-visible-on-ancestor-opacity: 1;
+			}
+			:host([d2l-visible-on-ancestor-transition]) {
+				transition: transform 200ms ease-out, opacity 200ms ease-out !important;
+			}
+			:host([d2l-visible-on-ancestor-show]) {
+				opacity: var(--d2l-visible-on-ancestor-opacity);
+				transform: translateY(0);
+			}
+			:host([d2l-visible-on-ancestor-hide]) {
+				opacity: 0 !important;
+				transform: translateY(-10px) !important;
+			}
+		</style>
+	</template>
+</dom-module>
 <script>
+(function() {
+
 	window.D2L = window.D2L || {};
 	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 
@@ -16,47 +38,14 @@
 			 */
 			visibleOnAncestor: {
 				type: Boolean,
+				observer: '__voaHandleVisibleOnAncestor',
 				reflectToAttribute: true
 			}
 
 		},
 
-		attached: function() {
-
-			if (!this.visibleOnAncestor) return;
-			this.__voaTarget = D2L.Dom.findComposedAncestor(this, function(node) {
-				if (!node || node.nodeType !== 1) return false;
-				return (node.classList.contains('d2l-visible-on-ancestor-target'));
-			});
-			if (!this.__voaTarget) return;
-
-			this.__voaHandleBlur = this.__voaHandleBlur.bind(this);
-			this.__voaHandleFocus = this.__voaHandleFocus.bind(this);
-			this.__voaHandleMouseEnter = this.__voaHandleMouseEnter.bind(this);
-			this.__voaHandleMouseLeave = this.__voaHandleMouseLeave.bind(this);
-			this.__voaHandleHideEnd = this.__voaHandleHideEnd.bind(this);
-
-			this.__voaTarget.addEventListener('focus', this.__voaHandleFocus, true);
-			this.__voaTarget.addEventListener('blur', this.__voaHandleBlur, true);
-			this.__voaTarget.addEventListener('mouseenter', this.__voaHandleMouseEnter);
-			this.__voaTarget.addEventListener('mouseleave', this.__voaHandleMouseLeave);
-
-			this.style.transition = 'transform 200ms ease-out, opacity 200ms ease-out';
-			fastdom.mutate(function() {
-				this.style.transform = 'translateY(-10px)';
-				this.style.opacity = '0';
-				this.style.display = 'none';
-			}.bind(this));
-
-		},
-
 		detached: function() {
-			if (!this.__voaTarget) return;
-			this.__voaTarget.removeEventListener('focus', this.__voaHandleFocus, true);
-			this.__voaTarget.removeEventListener('blur', this.__voaHandleBlur, true);
-			this.__voaTarget.removeEventListener('mouseenter', this.__voaHandleMouseEnter);
-			this.__voaTarget.removeEventListener('mouseleave', this.__voaHandleMouseLeave);
-			this.__voaTarget = null;
+			this.__voaUninit();
 		},
 
 		__voaHandleHideEnd: function(e) {
@@ -65,7 +54,7 @@
 			}
 			this.removeEventListener('transitionend', this.__voaHandleHideEnd);
 			fastdom.mutate(function() {
-				this.style.display = 'none';
+				this.setAttribute('d2l-visible-on-ancestor-hide', 'd2l-visible-on-ancestor-hide');
 			}.bind(this));
 		},
 
@@ -92,28 +81,77 @@
 			this.__voaHide();
 		},
 
+		__voaHandleVisibleOnAncestor: function(newValue, oldValue) {
+			if (newValue) {
+				this.__voaInit();
+			} else if(oldValue) {
+				this.__voaUninit();
+			}
+		},
+
 		__voaHide: function() {
 			if (this.__voaFocusIn || this.__voaMouseOver) return;
 			fastdom.mutate(function() {
 				this.addEventListener('transitionend', this.__voaHandleHideEnd);
-				this.style.transform = 'translateY(-10px)';
-				this.style.opacity = '0';
+				this.setAttribute('d2l-visible-on-ancestor-transition','d2l-visible-on-ancestor-transition');
+				this.setAttribute('d2l-visible-on-ancestor-hide', 'd2l-visible-on-ancestor-hide');
+				this.removeAttribute('d2l-visible-on-ancestor-show');
 			}.bind(this));
+		},
+
+		__voaInit: function() {
+
+			this.__voaTarget = D2L.Dom.findComposedAncestor(this, function(node) {
+				if (!node || node.nodeType !== 1) return false;
+				return (node.classList.contains('d2l-visible-on-ancestor-target'));
+			});
+			if (!this.__voaTarget) return;
+
+			this.__voaHandleBlur = this.__voaHandleBlur.bind(this);
+			this.__voaHandleFocus = this.__voaHandleFocus.bind(this);
+			this.__voaHandleMouseEnter = this.__voaHandleMouseEnter.bind(this);
+			this.__voaHandleMouseLeave = this.__voaHandleMouseLeave.bind(this);
+			this.__voaHandleHideEnd = this.__voaHandleHideEnd.bind(this);
+
+			this.__voaTarget.addEventListener('focus', this.__voaHandleFocus, true);
+			this.__voaTarget.addEventListener('blur', this.__voaHandleBlur, true);
+			this.__voaTarget.addEventListener('mouseenter', this.__voaHandleMouseEnter);
+			this.__voaTarget.addEventListener('mouseleave', this.__voaHandleMouseLeave);
+
+			fastdom.mutate(function() {
+				this.setAttribute('d2l-visible-on-ancestor-hide', 'd2l-visible-on-ancestor-hide');
+			}.bind(this));
+
+			fastdom.measure(function() {
+				var opacity = window.getComputedStyle(this, null).getPropertyValue('opacity');
+				fastdom.mutate(function() {
+					if (opacity !== '1') {
+						this.updateStyles({'--d2l-visible-on-ancestor-opacity': opacity});
+					}
+				}.bind(this));
+			}.bind(this));
+
 		},
 
 		__voaShow: function() {
 			this.removeEventListener('transitionend', this.__voaHandleHideEnd);
 			fastdom.mutate(function() {
-				this.style.display = '';
-				fastdom.measure(function() {
-					fastdom.mutate(function() {
-						this.style.transform = 'translateY(0)';
-						this.style.opacity = '1';
-					}.bind(this));
-				}.bind(this));
+				this.setAttribute('d2l-visible-on-ancestor-show', 'd2l-visible-on-ancestor-show');
+				this.setAttribute('d2l-visible-on-ancestor-transition','d2l-visible-on-ancestor-transition');
+				this.removeAttribute('d2l-visible-on-ancestor-hide');
 			}.bind(this));
+		},
+
+		__voaUninit: function() {
+			if (!this.__voaTarget) return;
+			this.__voaTarget.removeEventListener('focus', this.__voaHandleFocus, true);
+			this.__voaTarget.removeEventListener('blur', this.__voaHandleBlur, true);
+			this.__voaTarget.removeEventListener('mouseenter', this.__voaHandleMouseEnter);
+			this.__voaTarget.removeEventListener('mouseleave', this.__voaHandleMouseLeave);
+			this.__voaTarget = null;
 		}
 
 	};
 
+})();
 </script>
