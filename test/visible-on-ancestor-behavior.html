@@ -80,9 +80,7 @@
 
 				beforeEach(function(done) {
 					voaFixture = fixture('noVisibleOnAncestor');
-					requestAnimationFrame(function() {
-						done();
-					});
+					Polymer.RenderStatus.afterNextRender(voaFixture, done);
 				});
 
 				it('is visible', function() {
@@ -103,9 +101,7 @@
 
 				beforeEach(function(done) {
 					voaFixture = fixture('noVisibleOnAncestorTarget');
-					requestAnimationFrame(function() {
-						done();
-					});
+					Polymer.RenderStatus.afterNextRender(voaFixture, done);
 				});
 
 				it('is visible', function() {
@@ -118,9 +114,7 @@
 
 				beforeEach(function(done) {
 					voaFixture = fixture('simpleVisibleOnAncestor');
-					requestAnimationFrame(function() {
-						done();
-					})
+					Polymer.RenderStatus.afterNextRender(voaFixture, done);
 				});
 
 				it('is visible if visible-on-ancestor attribute not specified', function() {
