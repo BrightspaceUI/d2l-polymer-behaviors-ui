@@ -1,0 +1,28 @@
+<html>
+<head>
+	<title>D2L Visible on Ancestor Behavior</title>
+	<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+	<link rel="stylesheet" href="../demo-styles.css">
+	<link rel="import" href="../../../polymer/polymer.html">
+	<link rel="import" href="d2l-visible-on-ancestor-component.html">
+	<style>
+		d2l-visible-on-ancestor-component {
+			margin: 20px;
+		}
+	</style>
+</head>
+<body unresolved>
+
+	<h1>d2l-visible-on-ancestor-behavior</h1>
+
+	<h2>Component</h2>
+
+	<d2l-visible-on-ancestor-component id="wc1">focusable 1</d2l-visible-on-ancestor-component>
+	<div class="d2l-visible-on-ancestor-target" style="display: inline-block; border: 1px dashed black;">
+		<d2l-visible-on-ancestor-component id="wc2">focusable 2</d2l-visible-on-ancestor-component>
+		<d2l-visible-on-ancestor-component id="wc3" visible-on-ancestor>focusable 3</d2l-visible-on-ancestor-component>
+	</div>
+	<d2l-visible-on-ancestor-component id="wc4">focusable 4</d2l-visible-on-ancestor-component>
+
+</body>
+</html>

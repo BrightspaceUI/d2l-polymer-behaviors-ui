@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>d2l-visible-on-ancestor-behavior tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+		<link rel="import" href="../../polymer/polymer.html">
+		<link rel="import" href="../d2l-focusable-behavior.html">
+		<link rel="import" href="../d2l-visible-on-ancestor-behavior.html">
+	</head>
+	<body>
+		<dom-module id="d2l-visible-on-ancestor-behavior-test">
+			<template>
+				<button class="d2l-focusable"><slot></slot></button>
+			</template>
+			<script>
+				Polymer({
+					is: 'd2l-visible-on-ancestor-behavior-test',
+					behaviors: [
+						D2L.PolymerBehaviors.FocusableBehavior,
+						D2L.PolymerBehaviors.VisibleOnAncestorBehavior
+					]
+				});
+			</script>
+		</dom-module>
+
+		<test-fixture id="noVisibleOnAncestor">
+			<template>
+				<div class="d2l-visible-on-ancestor-target">
+					<d2l-visible-on-ancestor-behavior-test id="wc1">focusable 1</d2l-visible-on-ancestor-behavior-test>
+				</div>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="noVisibleOnAncestorTarget">
+			<template>
+				<div>
+					<d2l-visible-on-ancestor-behavior-test id="wc1" visible-on-ancestor>focusable 1</d2l-visible-on-ancestor-behavior-test>
+				</div>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="simpleVisibleOnAncestor">
+			<template>
+				<div>
+					<d2l-visible-on-ancestor-behavior-test id="wc1">focusable 1</d2l-visible-on-ancestor-behavior-test>
+					<div class="d2l-visible-on-ancestor-target" tabindex="0">
+						<d2l-visible-on-ancestor-behavior-test id="wc2" tabindex="0">focusable 2</d2l-visible-on-ancestor-behavior-test>
+						<d2l-visible-on-ancestor-behavior-test id="wc3" visible-on-ancestor>focusable 3</d2l-visible-on-ancestor-behavior-test>
+					</div>
+				</div>
+			</template>
+		</test-fixture>
+
+		<script>
+
+		describe('d2l-visible-on-ancestor-behavior', function() {
+
+			var voaFixture;
+
+			var isDisplayed = function(node) {
+				return !node.hasAttribute('d2l-visible-on-ancestor-hide');
+			};
+
+			var dispatchMouseEvent = function(node, name) {
+				var e = new MouseEvent(name, {
+					bubbles: false,
+					cancelable: false,
+					clientX: 0,
+					clientY: 0,
+					composed: true,
+					buttons: 0
+				});
+				node.dispatchEvent(e);
+			};
+
+			describe('no visible-on-ancestor elements', function() {
+
+				beforeEach(function(done) {
+					voaFixture = fixture('noVisibleOnAncestor');
+					Polymer.RenderStatus.afterNextRender(voaFixture, done);
+				});
+
+				it('is visible', function() {
+					expect(isDisplayed(voaFixture.querySelector('#wc1'))).to.equal(true);
+				});
+
+				it('is not visible after adding visible-on-ancestor attribute', function(done) {
+					voaFixture.querySelector('#wc1').setAttribute('visible-on-ancestor', 'visible-on-ancestor');
+					requestAnimationFrame(function() {
+						expect(isDisplayed(voaFixture.querySelector('#wc1'))).to.equal(false);
+						done();
+					});
+				});
+
+			});
+
+			describe('no visible-on-ancestor target element', function() {
+
+				beforeEach(function(done) {
+					voaFixture = fixture('noVisibleOnAncestorTarget');
+					Polymer.RenderStatus.afterNextRender(voaFixture, done);
+				});
+
+				it('is visible', function() {
+					expect(isDisplayed(voaFixture.querySelector('#wc1'))).to.equal(true);
+				});
+
+			});
+
+			describe('visible-on-ancestor', function() {
+
+				beforeEach(function(done) {
+					voaFixture = fixture('simpleVisibleOnAncestor');
+					Polymer.RenderStatus.afterNextRender(voaFixture, done);
+				});
+
+				it('is visible if visible-on-ancestor attribute not specified', function() {
+					expect(isDisplayed(voaFixture.querySelector('#wc1'))).to.equal(true);
+					expect(isDisplayed(voaFixture.querySelector('#wc2'))).to.equal(true);
+				});
+
+				it('is not visible if visible visible-on-ancestor attribute is specified', function() {
+					expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(false);
+				});
+
+				it('is visible if mouseenter event fires for visible-on-ancestor target', function(done) {
+					dispatchMouseEvent(voaFixture.querySelector('.d2l-visible-on-ancestor-target'), 'mouseenter');
+					requestAnimationFrame(function() {
+						expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(true);
+						done();
+					});
+				});
+
+				it('is not visible if mouseleave event fires for visible-on-ancestor target', function(done) {
+					dispatchMouseEvent(voaFixture.querySelector('.d2l-visible-on-ancestor-target'), 'mouseenter');
+					requestAnimationFrame(function() {
+						expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(true);
+						dispatchMouseEvent(voaFixture.querySelector('.d2l-visible-on-ancestor-target'), 'mouseleave');
+						requestAnimationFrame(function() {
+							expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(false);
+							done();
+						});
+					});
+				});
+
+				it('is visible if visible-on-ancestor target is focused', function(done) {
+					voaFixture.querySelector('.d2l-visible-on-ancestor-target').focus();
+					requestAnimationFrame(function() {
+						expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(true);
+						done();
+					});
+				});
+
+				it('is visible if visible-on-ancestor target child is focused', function(done) {
+					voaFixture.querySelector('#wc2').focus();
+					requestAnimationFrame(function() {
+						expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(true);
+						done();
+					});
+				});
+
+				it('is visible if mouseleave event fires for visible-on-ancestor target and child is focused', function(done) {
+					voaFixture.querySelector('#wc2').focus();
+					requestAnimationFrame(function() {
+						expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(true);
+						dispatchMouseEvent(voaFixture.querySelector('.d2l-visible-on-ancestor-target'), 'mouseleave');
+						requestAnimationFrame(function() {
+							expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(true);
+							done();
+						});
+					});
+				});
+
+				it('is not visible if focus is moved to element outside visible-on-ancestor target', function(done) {
+					voaFixture.querySelector('#wc2').focus();
+					requestAnimationFrame(function() {
+						expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(true);
+						voaFixture.querySelector('#wc1').focus();
+						requestAnimationFrame(function() {
+							expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(false);
+							done();
+						});
+					});
+				});
+
+			});
+
+		});
+
+		</script>
+	</body>
+</html>
