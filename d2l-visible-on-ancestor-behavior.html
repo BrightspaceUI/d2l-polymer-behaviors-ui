@@ -5,18 +5,12 @@
 <dom-module id="d2l-visible-on-ancestor-styles">
 	<template>
 		<style>
-			:host {
-				--d2l-visible-on-ancestor-opacity: 1;
-			}
-			:host([d2l-visible-on-ancestor-show]) {
-				opacity: var(--d2l-visible-on-ancestor-opacity);
-				transform: translateY(0);
+			:host([d2l-visible-on-ancestor-transition]) {
 				transition: transform 200ms ease-out, opacity 200ms ease-out !important;
 			}
 			:host([d2l-visible-on-ancestor-hide]) {
 				opacity: 0 !important;
 				transform: translateY(-10px) !important;
-				transition: transform 200ms ease-out, opacity 200ms ease-out !important;
 			}
 		</style>
 	</template>
@@ -47,14 +41,12 @@
 			this.__voaUninit();
 		},
 
-		__voaHandleHideEnd: function(e) {
-			if (e.propertyName !== 'transform') {
+		__voaHandleBlur: function(e) {
+			if (D2L.Dom.isComposedAncestor(this.__voaTarget, e.relatedTarget)) {
 				return;
 			}
-			this.removeEventListener('transitionend', this.__voaHandleHideEnd);
-			fastdom.mutate(function() {
-				this.setAttribute('d2l-visible-on-ancestor-hide', 'd2l-visible-on-ancestor-hide');
-			}.bind(this));
+			this.__voaFocusIn = false;
+			this.__voaHide();
 		},
 
 		__voaHandleFocus: function() {
@@ -62,12 +54,14 @@
 			this.__voaShow();
 		},
 
-		__voaHandleBlur: function(e) {
-			if (D2L.Dom.isComposedAncestor(this.__voaTarget, e.relatedTarget)) {
+		__voaHandleHideEnd: function(e) {
+			if (e.propertyName !== 'transform') {
 				return;
 			}
-			this.__voaFocusIn = false;
-			this.__voaHide();
+			this.removeEventListener('transitionend', this.__voaHandleHideEnd);
+			fastdom.mutate(function() {
+				this.removeAttribute('d2l-visible-on-ancestor-transition');
+			}.bind(this));
 		},
 
 		__voaHandleMouseEnter: function() {
@@ -78,6 +72,16 @@
 		__voaHandleMouseLeave: function() {
 			this.__voaMouseOver = false;
 			this.__voaHide();
+		},
+
+		__voaHandleShowEnd: function(e) {
+			if (e.propertyName !== 'transform') {
+				return;
+			}
+			this.removeEventListener('transitionend', this.__voaHandleShowEnd);
+			fastdom.mutate(function() {
+				this.removeAttribute('d2l-visible-on-ancestor-transition');
+			}.bind(this));
 		},
 
 		__voaHandleVisibleOnAncestor: function(newValue, oldValue) {
@@ -92,8 +96,8 @@
 			if (this.__voaFocusIn || this.__voaMouseOver) return;
 			fastdom.mutate(function() {
 				this.addEventListener('transitionend', this.__voaHandleHideEnd);
+				this.setAttribute('d2l-visible-on-ancestor-transition', 'd2l-visible-on-ancestor-transition');
 				this.setAttribute('d2l-visible-on-ancestor-hide', 'd2l-visible-on-ancestor-hide');
-				this.removeAttribute('d2l-visible-on-ancestor-show');
 			}.bind(this));
 		},
 
@@ -110,6 +114,7 @@
 			this.__voaHandleMouseEnter = this.__voaHandleMouseEnter.bind(this);
 			this.__voaHandleMouseLeave = this.__voaHandleMouseLeave.bind(this);
 			this.__voaHandleHideEnd = this.__voaHandleHideEnd.bind(this);
+			this.__voaHandleShowEnd = this.__voaHandleShowEnd.bind(this);
 
 			this.__voaTarget.addEventListener('focus', this.__voaHandleFocus, true);
 			this.__voaTarget.addEventListener('blur', this.__voaHandleBlur, true);
@@ -120,21 +125,12 @@
 				this.setAttribute('d2l-visible-on-ancestor-hide', 'd2l-visible-on-ancestor-hide');
 			}.bind(this));
 
-			fastdom.measure(function() {
-				var opacity = window.getComputedStyle(this, null).getPropertyValue('opacity');
-				fastdom.mutate(function() {
-					if (opacity !== '1') {
-						this.updateStyles({'--d2l-visible-on-ancestor-opacity': opacity});
-					}
-				}.bind(this));
-			}.bind(this));
-
 		},
 
 		__voaShow: function() {
-			this.removeEventListener('transitionend', this.__voaHandleHideEnd);
 			fastdom.mutate(function() {
-				this.setAttribute('d2l-visible-on-ancestor-show', 'd2l-visible-on-ancestor-show');
+				this.addEventListener('transitionend', this.__voaHandleShowEnd);
+				this.setAttribute('d2l-visible-on-ancestor-transition', 'd2l-visible-on-ancestor-transition');
 				this.removeAttribute('d2l-visible-on-ancestor-hide');
 			}.bind(this));
 		},
