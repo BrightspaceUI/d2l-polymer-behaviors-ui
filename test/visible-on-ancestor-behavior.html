@@ -90,8 +90,10 @@
 				it('is not visible after adding visible-on-ancestor attribute', function(done) {
 					voaFixture.querySelector('#wc1').setAttribute('visible-on-ancestor', 'visible-on-ancestor');
 					requestAnimationFrame(function() {
-						expect(isDisplayed(voaFixture.querySelector('#wc1'))).to.equal(false);
-						done();
+						requestAnimationFrame(function() {
+							expect(isDisplayed(voaFixture.querySelector('#wc1'))).to.equal(false);
+							done();
+						});
 					});
 				});
 
@@ -122,8 +124,11 @@
 					expect(isDisplayed(voaFixture.querySelector('#wc2'))).to.equal(true);
 				});
 
-				it('is not visible if visible visible-on-ancestor attribute is specified', function() {
-					expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(false);
+				it('is not visible if visible visible-on-ancestor attribute is specified', function(done) {
+					requestAnimationFrame(function() {
+						expect(isDisplayed(voaFixture.querySelector('#wc3'))).to.equal(false);
+						done();
+					});
 				});
 
 				it('is visible if mouseenter event fires for visible-on-ancestor target', function(done) {
