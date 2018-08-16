@@ -86,7 +86,9 @@
 
 		__voaHandleVisibleOnAncestor: function(newValue, oldValue) {
 			if (newValue) {
-				this.__voaInit();
+				requestAnimationFrame(function() {
+					this.__voaInit();
+				}.bind(this));
 			} else if (oldValue) {
 				this.__voaUninit();
 			}
