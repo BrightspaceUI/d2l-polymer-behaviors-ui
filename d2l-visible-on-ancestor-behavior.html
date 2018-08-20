@@ -5,6 +5,9 @@
 <dom-module id="d2l-visible-on-ancestor-styles">
 	<template>
 		<style>
+			:host([d2l-visible-on-ancestor-init]) {
+				visibility: hidden;
+			}
 			:host([d2l-visible-on-ancestor-transition]) {
 				transition: transform 200ms ease-out, opacity 200ms ease-out !important;
 			}
@@ -85,6 +88,10 @@
 		},
 
 		__voaHandleVisibleOnAncestor: function(newValue, oldValue) {
+			if (oldValue === undefined && newValue) {
+				// this class prevents possible FOUC in slow clients
+				this.setAttribute('d2l-visible-on-ancestor-init', 'd2l-visible-on-ancestor-init');
+			}
 			requestAnimationFrame(function() {
 				if (newValue) {
 					this.__voaInit();
@@ -105,13 +112,19 @@
 
 		__voaInit: function() {
 
-			if (!this.visibleOnAncestor) return;
+			if (!this.visibleOnAncestor) {
+				this.removeAttribute('d2l-visible-on-ancestor-init');
+				return;
+			};
 
 			this.__voaTarget = D2L.Dom.findComposedAncestor(this, function(node) {
 				if (!node || node.nodeType !== 1) return false;
 				return (node.classList.contains('d2l-visible-on-ancestor-target'));
 			});
-			if (!this.__voaTarget) return;
+			if (!this.__voaTarget) {
+				this.removeAttribute('d2l-visible-on-ancestor-init');
+				return;
+			};
 
 			this.__voaHandleBlur = this.__voaHandleBlur.bind(this);
 			this.__voaHandleFocus = this.__voaHandleFocus.bind(this);
@@ -126,6 +139,7 @@
 			this.__voaTarget.addEventListener('mouseleave', this.__voaHandleMouseLeave);
 
 			fastdom.mutate(function() {
+				this.removeAttribute('d2l-visible-on-ancestor-init');
 				this.setAttribute('d2l-visible-on-ancestor-hide', 'd2l-visible-on-ancestor-hide');
 			}.bind(this));
 
