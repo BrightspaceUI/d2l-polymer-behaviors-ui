@@ -85,13 +85,13 @@
 		},
 
 		__voaHandleVisibleOnAncestor: function(newValue, oldValue) {
-			if (newValue) {
-				requestAnimationFrame(function() {
+			requestAnimationFrame(function() {
+				if (newValue) {
 					this.__voaInit();
-				}.bind(this));
-			} else if (oldValue) {
-				this.__voaUninit();
-			}
+				} else if (oldValue) {
+					this.__voaUninit();
+				}
+			}.bind(this));
 		},
 
 		__voaHide: function() {
@@ -104,6 +104,8 @@
 		},
 
 		__voaInit: function() {
+
+			if (!this.visibleOnAncestor) return;
 
 			this.__voaTarget = D2L.Dom.findComposedAncestor(this, function(node) {
 				if (!node || node.nodeType !== 1) return false;
