@@ -43,6 +43,7 @@
 		attached: function() {
 			this.__voaAttached = true;
 			if (this.visibleOnAncestor) {
+				// this class prevents possible FOUC in slow clients
 				this.setAttribute('d2l-visible-on-ancestor-init', 'd2l-visible-on-ancestor-init');
 				this.__voaInit();
 			} else if (this.hasAttribute('d2l-visible-on-ancestor-hide')) {
