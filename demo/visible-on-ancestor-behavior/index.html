@@ -9,6 +9,30 @@
 		d2l-visible-on-ancestor-component {
 			margin: 20px;
 		}
+		.ancestor-container {
+			background-color: rgba(0,0,0,0.03);
+			border: 1px dashed black;
+			display: inline-block;
+			padding: 1rem;
+			position: relative;
+			min-width: 240px;
+			min-height: 80px;
+		}
+		.ancestor-container::before {
+			box-sizing: border-box;
+			content: 'target 'attr(id);
+			font-size: 0.7rem;
+			height: 100%;
+			left:0;
+			padding: 0.5rem;
+			position: absolute;;
+			text-align: right;
+			top: 0;
+			width: 100%;
+		}
+		.ancestor-container.d2l-visible-on-ancestor-target::before {
+			content: 'target 'attr(id)'; visible-on-ancestor';
+		}
 	</style>
 </head>
 <body unresolved>
@@ -18,11 +42,41 @@
 	<h2>Component</h2>
 
 	<d2l-visible-on-ancestor-component id="wc1">focusable 1</d2l-visible-on-ancestor-component>
-	<div class="d2l-visible-on-ancestor-target" style="display: inline-block; border: 1px dashed black;">
-		<d2l-visible-on-ancestor-component id="wc2">focusable 2</d2l-visible-on-ancestor-component>
-		<d2l-visible-on-ancestor-component id="wc3" visible-on-ancestor>focusable 3</d2l-visible-on-ancestor-component>
+	<div id="target1" class="d2l-visible-on-ancestor-target ancestor-container">
+		<d2l-visible-on-ancestor-component id="wc2" visible-on-ancestor>focusable 2</d2l-visible-on-ancestor-component>
+		<d2l-visible-on-ancestor-component id="wc3" >focusable 3</d2l-visible-on-ancestor-component>
 	</div>
-	<d2l-visible-on-ancestor-component id="wc4">focusable 4</d2l-visible-on-ancestor-component>
 
+	<div id="target2" class="d2l-visible-on-ancestor-target ancestor-container">
+			<d2l-visible-on-ancestor-component id="wc4">focusable 4</d2l-visible-on-ancestor-component>
+	</div>
+
+	<div id="target3" class="ancestor-container">
+		<d2l-visible-on-ancestor-component id="wc5">focusable 5</d2l-visible-on-ancestor-component>
+	</div>
+
+	<div style="margin-top: 1rem;">
+		<button onclick="moveToTarget('target2');">move to target 2</button>
+		<button onclick="moveToTarget('target3');">move to target 3</button>
+	</div>
+
+	<script>
+		function moveToTarget(id) {
+
+			var wc = document.getElementById('wc2');
+			var parent = wc.parentNode;
+
+			wc.parentNode.removeChild(wc);
+
+			parent = document.getElementById(id);
+
+			if (!parent.classList.contains('d2l-visible-on-ancestor-target')) {
+				wc.removeAttribute('visible-on-ancestor');
+			}
+
+			parent.appendChild(wc);
+
+		}
+	</script>
 </body>
 </html>
