@@ -66,6 +66,9 @@
 							simpleFixture.arrowKeyFocusablesOnBeforeFocus = function(elem) {
 								return new Promise(function(resolve) {
 									expect(elem).to.equal(focusables[keyInteractions[i].endIndex]);
+									if (focusables[keyInteractions[i].startIndex] === focusables[keyInteractions[i].endIndex]) {
+										done();
+									}
 									resolve();
 								})
 							};
@@ -120,6 +123,23 @@
 						{ name: 'focuses on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 38 },
 						{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
 						{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+					]);
+
+				});
+
+				describe('nowrap - up-down-left-right', function() {
+
+					beforeEach(function(done) {
+						simpleFixture.arrowKeyFocusablesDirection = 'updownleftright';
+						simpleFixture.arrowKeyFocusablesNoWrap = true;
+						done();
+					});
+
+					testKeyInteractions([
+						{ name: 'does not focus on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, endIndex: 0, keyCode: 37 },
+						{ name: 'does not focus on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, endIndex: 0, keyCode: 38 },
+						{ name: 'does not focus on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, endIndex: 4, keyCode: 39 },
+						{ name: 'does not focus on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, endIndex: 4, keyCode: 40 }
 					]);
 
 				});
