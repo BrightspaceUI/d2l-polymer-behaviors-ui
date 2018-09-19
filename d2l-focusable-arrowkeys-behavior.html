@@ -165,7 +165,7 @@
 			var index = elems.indexOf(elem);
 			if (index === elems.length - 1) {
 				if (this.arrowKeyFocusablesNoWrap) {
-					return elem;
+					return;
 				}
 				return elems[0];
 			}
@@ -179,7 +179,7 @@
 			var index = elems.indexOf(elem);
 			if (index === 0) {
 				if (this.arrowKeyFocusablesNoWrap) {
-					return elem;
+					return;
 				}
 				return elems[elems.length - 1];
 			}
