@@ -26,6 +26,11 @@
 			arrowKeyFocusablesDirection: {
 				type: String,
 				value: 'leftright'
+			},
+
+			arrowKeyFocusablesNoWrap: {
+				type: Boolean,
+				value: false
 			}
 
 		},
@@ -123,7 +128,7 @@
 
 		__handleKeyDown: function(e) {
 			var target = e.target;
-			if (this.arrowKeyFocusablesDirection === 'leftright' && e.keyCode === this.__keyCodes.LEFT) {
+			if (this.arrowKeyFocusablesDirection.indexOf('left') >= 0 && e.keyCode === this.__keyCodes.LEFT) {
 				fastdom.measure(function() {
 					if (getComputedStyle(this).direction === 'rtl') {
 						this.__focusNext(target);
@@ -131,7 +136,7 @@
 						this.__focusPrevious(target);
 					}
 				}.bind(this));
-			} else if (this.arrowKeyFocusablesDirection === 'leftright' && e.keyCode === this.__keyCodes.RIGHT) {
+			} else if (this.arrowKeyFocusablesDirection.indexOf('right') >= 0 && e.keyCode === this.__keyCodes.RIGHT) {
 				fastdom.measure(function() {
 					if (getComputedStyle(this).direction === 'rtl') {
 						this.__focusPrevious(target);
@@ -139,10 +144,10 @@
 						this.__focusNext(target);
 					}
 				}.bind(this));
-			} else if (this.arrowKeyFocusablesDirection === 'updown' && e.keyCode === this.__keyCodes.UP) {
-				this.__focusPrevious(e.target);
-			} else if (this.arrowKeyFocusablesDirection === 'updown' && e.keyCode === this.__keyCodes.DOWN) {
-				this.__focusNext(e.target);
+			} else if (this.arrowKeyFocusablesDirection.indexOf('up') >= 0 && e.keyCode === this.__keyCodes.UP) {
+				this.__focusPrevious(target);
+			} else if (this.arrowKeyFocusablesDirection.indexOf('down') >= 0 && e.keyCode === this.__keyCodes.DOWN) {
+				this.__focusNext(target);
 			} else if (e.keyCode === this.__keyCodes.HOME) {
 				this.__focusFirst();
 			} else if (e.keyCode === this.__keyCodes.END) {
@@ -159,6 +164,9 @@
 			}
 			var index = elems.indexOf(elem);
 			if (index === elems.length - 1) {
+				if (this.arrowKeyFocusablesNoWrap) {
+					return;
+				}
 				return elems[0];
 			}
 			return elems[index + 1];
@@ -170,6 +178,9 @@
 			}
 			var index = elems.indexOf(elem);
 			if (index === 0) {
+				if (this.arrowKeyFocusablesNoWrap) {
+					return;
+				}
 				return elems[elems.length - 1];
 			}
 			return elems[index - 1];
