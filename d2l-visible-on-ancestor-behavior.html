@@ -15,6 +15,16 @@
 				opacity: 0 !important;
 				transform: translateY(-10px) !important;
 			}
+			@media only screen and (hover: none), only screen and (-moz-touch-enabled: 1) {
+				:host([d2l-visible-on-ancestor-hide]) {
+					opacity: 1 !important;
+					transform: translateY(0px) !important;
+				}
+				:host([d2l-visible-on-ancestor-no-hover-hide]) {
+					opacity: 0 !important;
+					transform: translateY(-10px) !important;
+				}
+			}
 		</style>
 	</template>
 </dom-module>
