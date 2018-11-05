@@ -18,11 +18,9 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
-    "chromedriver": "^2.40.0",
     "eslint": "^4.15.0",
     "eslint-config-brightspace": "^0.4.0",
     "eslint-plugin-html": "^4.0.1",
-    "polymer-cli": "^1.5.7",
-    "sauce-connect-launcher": "^1.2.4"
+    "polymer-cli": "^1.5.7"
   }
 }
