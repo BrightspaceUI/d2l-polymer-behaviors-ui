@@ -1,0 +1,22 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<dom-module id="d2l-visibility-test">
+	<template>
+		<style>
+			:host([hidden]) {
+				display: none;
+			}
+			:host([hidden-shadow]) .container {
+				display: none;
+			}
+		</style>
+		<div class="container">
+			<slot></slot>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: 'd2l-visibility-test'
+		});
+	</script>
+</dom-module>

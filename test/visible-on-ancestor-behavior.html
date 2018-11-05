@@ -7,24 +7,9 @@
 		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 		<script src="../../web-component-tester/browser.js"></script>
 		<link rel="import" href="../../polymer/polymer.html">
-		<link rel="import" href="../d2l-focusable-behavior.html">
-		<link rel="import" href="../d2l-visible-on-ancestor-behavior.html">
+		<link rel="import" href="visible-on-ancestor-behavior-components.html">
 	</head>
 	<body>
-		<dom-module id="d2l-visible-on-ancestor-behavior-test">
-			<template>
-				<button class="d2l-focusable"><slot></slot></button>
-			</template>
-			<script>
-				Polymer({
-					is: 'd2l-visible-on-ancestor-behavior-test',
-					behaviors: [
-						D2L.PolymerBehaviors.FocusableBehavior,
-						D2L.PolymerBehaviors.VisibleOnAncestorBehavior
-					]
-				});
-			</script>
-		</dom-module>
 
 		<test-fixture id="noVisibleOnAncestor">
 			<template>

@@ -67,7 +67,8 @@
 								expect(collapseFixture.style.display).to.equal('inline-block');
 								expect(collapseFixture.style.height).to.equal('500px');
 								expect(collapseFixture.style.overflow).to.equal('visible');
-								expect(collapseFixture.style.transition).to.equal('transform 2s ease-out');
+								var isExpectedTransition = (collapseFixture.style.transition === 'transform 2s ease-out 0s' || collapseFixture.style.transition === 'transform 2s ease-out');
+								expect(isExpectedTransition).to.equal(true);
 								expect(collapseFixture.getAttribute('data-d2l-ec-display')).to.equal(null);
 								expect(collapseFixture.getAttribute('data-d2l-ec-height')).to.equal(null);
 								expect(collapseFixture.getAttribute('data-d2l-ec-overflow')).to.equal(null);

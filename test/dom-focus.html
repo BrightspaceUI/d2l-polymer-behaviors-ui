@@ -6,34 +6,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 		<script src="../../web-component-tester/browser.js"></script>
-		<link rel="import" href="../../polymer/polymer.html">
 		<link rel="import" href="../d2l-dom-focus.html">
+		<link rel="import" href="dom-focus-components.html">
 	</head>
 	<body>
-
-		<dom-module id="d2l-focus-test">
-			<template>
-				<div>
-					<div>
-						<a id="shadow1" href="javascript:void(0);"></a>
-					</div>
-					<div id="content">
-						<slot></slot>
-					</div>
-					<div>
-						<a id="shadow2" href="javascript:void(0);"></a>
-					</div>
-				</div>
-			</template>
-			<script>
-				Polymer({
-					is: 'd2l-focus-test',
-					getShadow1: function() { return this.$.shadow1; },
-					getContent: function() { return this.$.content; },
-					getShadow2: function() { return this.$.shadow2; }
-				});
-			</script>
-		</dom-module>
 
 		<test-fixture id="simpleFixture">
 			<template>

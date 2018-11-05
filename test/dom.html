@@ -6,24 +6,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 		<script src="../../web-component-tester/browser.js"></script>
-		<link rel="import" href="../../polymer/polymer.html">
 		<link rel="import" href="../d2l-dom.html">
+		<link rel="import" href="dom-components.html">
 	</head>
 	<body>
-
-		<dom-module id="d2l-dom-test">
-			<template>
-				<div id="container">
-					<slot></slot>
-				</div>
-			</template>
-			<script>
-				Polymer({
-					is: 'd2l-dom-test',
-					getContainer: function() { return this.$.container; }
-				});
-			</script>
-		</dom-module>
 
 		<test-fixture id="simpleFixture">
 			<template>
@@ -59,12 +45,13 @@
 		describe('d2l-dom', function() {
 
 			var simpleFixture, wcFixture, mixedFixture;
-			var shadow = Polymer.Settings.dom === 'shadow' || Polymer.Settings.useShadow;
+			var shadow;
 
 			beforeEach(function() {
 				simpleFixture = fixture('simpleFixture');
 				wcFixture = fixture('wcFixture');
 				mixedFixture = fixture('mixedFixture');
+				shadow = Polymer.Settings.dom === 'shadow' || Polymer.Settings.useShadow;
 			});
 
 			describe('findComposedAncestor', function() {
