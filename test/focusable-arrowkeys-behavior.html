@@ -51,14 +51,13 @@
 		</div>
 
 		<script>
-
 		describe('d2l-focusable-arrowkeys-behavior', function() {
 
 			var simpleFixture, focusables;
 
 			var testKeyInteractions = function(keyInteractions) {
 
-				for (var i=0; i<keyInteractions.length; i++) {
+				for (var i = 0; i < keyInteractions.length; i++) {
 
 					(function(i) {
 
@@ -67,7 +66,7 @@
 								return new Promise(function(resolve) {
 									expect(elem).to.equal(focusables[keyInteractions[i].endIndex]);
 									resolve();
-								})
+								});
 							};
 							focusables[keyInteractions[i].startIndex].focus();
 							focusables[keyInteractions[i].endIndex].addEventListener('focus', function() {
@@ -133,7 +132,7 @@
 					});
 
 					var testNoWrap = function(keyInteractions) {
-						for (var i=0; i<keyInteractions.length; i++) {
+						for (var i = 0; i < keyInteractions.length; i++) {
 
 							(function(i) {
 
@@ -149,7 +148,7 @@
 
 							}(i));
 						}
-					}
+					};
 
 					testNoWrap([
 						{ name: 'does not focus on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, keyCode: 37 },
