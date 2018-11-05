@@ -6,31 +6,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 		<script src="../../web-component-tester/browser.js"></script>
-		<link rel="import" href="../../polymer/polymer.html">
 		<link rel="import" href="../d2l-dom-visibility.html">
+		<link rel="import" href="dom-visibility-components.html">
 	</head>
 	<body>
-
-		<dom-module id="d2l-visibility-test">
-			<template>
-				<style>
-					:host([hidden]) {
-						display: none;
-					}
-					:host([hidden-shadow]) .container {
-						display: none;
-					}
-				</style>
-				<div class="container">
-					<slot></slot>
-				</div>
-			</template>
-			<script>
-				Polymer({
-					is: 'd2l-visibility-test'
-				});
-			</script>
-		</dom-module>
 
 		<test-fixture id="visibilityFixture">
 			<template>
@@ -55,10 +34,9 @@
 		</test-fixture>
 
 		<script>
-
 		describe('d2l-dom-visibility', function() {
 
-			var Visibility = D2L.Dom.Visibility;
+			var Visibility;
 
 			describe('isVisible', function() {
 
@@ -66,6 +44,7 @@
 
 				beforeEach(function() {
 					visibilityFixture = fixture('visibilityFixture')[1];
+					Visibility = D2L.Dom.Visibility; 
 				});
 
 				it('returns true if it and all ancestors are visible', function() {

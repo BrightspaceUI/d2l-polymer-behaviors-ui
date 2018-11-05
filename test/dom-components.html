@@ -1,0 +1,15 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<dom-module id="d2l-dom-test">
+	<template>
+		<div id="container">
+			<slot></slot>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: 'd2l-dom-test',
+			getContainer: function() { return this.$.container; }
+		});
+	</script>
+</dom-module>

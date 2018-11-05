@@ -7,34 +7,10 @@
 		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 		<script src="../../web-component-tester/browser.js"></script>
 		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-		<link rel="import" href="../../polymer/polymer.html">
-		<link rel="import" href="../d2l-focusable-arrowkeys-behavior.html">
 		<link rel="import" href="../d2l-dom-focus.html">
+		<link rel="import" href="focusable-arrowkeys-behavior-components.html">
 	</head>
 	<body>
-		<dom-module id="d2l-focusable-arrowkeys-test">
-			<template>
-				<div id="arrowFocusables">
-					<div tabindex="-1"></div>
-					<div tabindex="-1"></div>
-					<div tabindex="-1"></div>
-					<div tabindex="-1"></div>
-					<div tabindex="-1"></div>
-				</div>
-			</template>
-			<script>
-				Polymer({
-					is: 'd2l-focusable-arrowkeys-test',
-					behaviors: [D2L.PolymerBehaviors.FocusableArrowKeysBehavior],
-					attached: function() {
-						this.arrowKeyFocusablesContainer = this.$.arrowFocusables;
-						this.arrowKeyFocusablesProvider = function() {
-							return Promise.resolve(Array.prototype.slice.call(Polymer.dom(this.root).querySelectorAll('[tabindex]')));
-						}.bind(this);
-					}
-				});
-			</script>
-		</dom-module>
 
 		<test-fixture id="simpleFixture">
 			<template>
@@ -51,14 +27,13 @@
 		</div>
 
 		<script>
-
 		describe('d2l-focusable-arrowkeys-behavior', function() {
 
 			var simpleFixture, focusables;
 
 			var testKeyInteractions = function(keyInteractions) {
 
-				for (var i=0; i<keyInteractions.length; i++) {
+				for (var i = 0; i < keyInteractions.length; i++) {
 
 					(function(i) {
 
@@ -67,7 +42,7 @@
 								return new Promise(function(resolve) {
 									expect(elem).to.equal(focusables[keyInteractions[i].endIndex]);
 									resolve();
-								})
+								});
 							};
 							focusables[keyInteractions[i].startIndex].focus();
 							focusables[keyInteractions[i].endIndex].addEventListener('focus', function() {
@@ -133,7 +108,7 @@
 					});
 
 					var testNoWrap = function(keyInteractions) {
-						for (var i=0; i<keyInteractions.length; i++) {
+						for (var i = 0; i < keyInteractions.length; i++) {
 
 							(function(i) {
 
@@ -149,7 +124,7 @@
 
 							}(i));
 						}
-					}
+					};
 
 					testNoWrap([
 						{ name: 'does not focus on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, keyCode: 37 },
