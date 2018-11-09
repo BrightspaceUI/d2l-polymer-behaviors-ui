@@ -4,25 +4,26 @@
 		<meta charset="UTF-8">
 		<title>d2l-id tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
-		<link rel="import" href="../d2l-id.html">
+		<script src="../../@babel/polyfill/browser.js"></script>
+		<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../../wct-browser-legacy/browser.js"></script>
+		<script type="module" src="../d2l-id.js"></script>
 	</head>
 	<body>
 
-		<script>
-			describe('d2l-id', function() {
+		<script type="module">
+import '../d2l-id.js';
+describe('d2l-id', function() {
 
-				describe('getUniqueId', function() {
+	describe('getUniqueId', function() {
 
-					it('gets different id each time called', function() {
-						expect(D2L.Id.getUniqueId()).not.to.equal(D2L.Id.getUniqueId());
-					});
+		it('gets different id each time called', function() {
+			expect(D2L.Id.getUniqueId()).not.to.equal(D2L.Id.getUniqueId());
+		});
 
-				});
+	});
 
-			});
-
-		</script>
+});
+</script>
 	</body>
 </html>

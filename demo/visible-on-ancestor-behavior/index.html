@@ -1,10 +1,10 @@
 <html>
 <head>
 	<title>D2L Visible on Ancestor Behavior</title>
-	<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 	<link rel="stylesheet" href="../demo-styles.css">
-	<link rel="import" href="../../../polymer/polymer.html">
-	<link rel="import" href="d2l-visible-on-ancestor-component.html">
+	<script type="module" src="../../../@polymer/polymer/polymer-legacy.js"></script>
+	<script type="module" src="./d2l-visible-on-ancestor-component.js"></script>
 	<style>
 		d2l-visible-on-ancestor-component {
 			margin: 20px;
@@ -60,32 +60,33 @@
 		<button id="moveToTarget3">move to target 3</button>
 	</div>
 
-	<script>
-		function moveToTarget(id) {
+	<script type="module">
+import '../../../@polymer/polymer/polymer-legacy.js';
+import './d2l-visible-on-ancestor-component.js';
+function moveToTarget(id) {
 
-			var wc = document.getElementById('wc2');
-			var parent = wc.parentNode;
+	var wc = document.getElementById('wc2');
+	var parent = wc.parentNode;
 
-			wc.parentNode.removeChild(wc);
+	wc.parentNode.removeChild(wc);
 
-			parent = document.getElementById(id);
+	parent = document.getElementById(id);
 
-			if (!parent.classList.contains('d2l-visible-on-ancestor-target')) {
-				wc.removeAttribute('visible-on-ancestor');
-			}
+	if (!parent.classList.contains('d2l-visible-on-ancestor-target')) {
+		wc.removeAttribute('visible-on-ancestor');
+	}
 
-			parent.appendChild(wc);
+	parent.appendChild(wc);
 
-		}
+}
 
-		document.getElementById('moveToTarget2').addEventListener('click', function() {
-			moveToTarget('target2');
-		});
+document.getElementById('moveToTarget2').addEventListener('click', function() {
+	moveToTarget('target2');
+});
 
-		document.getElementById('moveToTarget3').addEventListener('click', function() {
-			moveToTarget('target3');
-		});
-
-	</script>
+document.getElementById('moveToTarget3').addEventListener('click', function() {
+	moveToTarget('target3');
+});
+</script>
 </body>
 </html>

@@ -4,10 +4,11 @@
 		<meta charset="UTF-8">
 		<title>d2l-dom-visibility tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
-		<link rel="import" href="../d2l-dom-visibility.html">
-		<link rel="import" href="dom-visibility-components.html">
+		<script src="../../@babel/polyfill/browser.js"></script>
+		<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../../wct-browser-legacy/browser.js"></script>
+		<script type="module" src="../d2l-dom-visibility.js"></script>
+		<script type="module" src="./dom-visibility-components.js"></script>
 	</head>
 	<body>
 
@@ -33,71 +34,73 @@
 			</template>
 		</test-fixture>
 
-		<script>
-		describe('d2l-dom-visibility', function() {
+		<script type="module">
+import '../d2l-dom-visibility.js';
+import './dom-visibility-components.js';
+import { dom } from '../../@polymer/polymer/lib/legacy/polymer.dom.js';
+describe('d2l-dom-visibility', function() {
 
-			var Visibility;
+	var Visibility;
 
-			describe('isVisible', function() {
+	describe('isVisible', function() {
 
-				var visibilityFixture;
+		var visibilityFixture;
 
-				beforeEach(function() {
-					visibilityFixture = fixture('visibilityFixture')[1];
-					Visibility = D2L.Dom.Visibility;
-				});
-
-				it('returns true if it and all ancestors are visible', function() {
-					expect(Visibility.isVisible(visibilityFixture.querySelector('#default')))
-						.to.be.true;
-				});
-
-				it('returns false if web component ancestor has display:none', function() {
-					Polymer.dom(visibilityFixture).setAttribute('hidden', true);
-					expect(Visibility.isVisible(visibilityFixture.querySelector('#default')))
-						.to.be.false;
-				});
-
-				it('returns false if web component shadow ancestor has display:none', function() {
-					Polymer.dom(visibilityFixture).setAttribute('hidden-shadow', true);
-					expect(Visibility.isVisible(visibilityFixture.querySelector('#default')))
-						.to.be.false;
-				});
-
-				it('returns false if inline style has visibility:hidden', function() {
-					expect(Visibility.isVisible(visibilityFixture.querySelector('#visibilityHidden')))
-						.to.be.false;
-				});
-
-				it('returns false if inline style has display:none', function() {
-					expect(Visibility.isVisible(visibilityFixture.querySelector('#displayNone')))
-						.to.be.false;
-				});
-
-				it('returns false if inheriting visibility:hidden', function() {
-					expect(Visibility.isVisible(visibilityFixture.querySelector('#visibilityInheritHidden')))
-						.to.be.false;
-				});
-
-				it('returns false if inheriting display:none', function() {
-					expect(Visibility.isVisible(visibilityFixture.querySelector('#displayInheritNone')))
-						.to.be.false;
-				});
-
-				it('returns false if parent has display:none', function() {
-					expect(Visibility.isVisible(visibilityFixture.querySelector('#parentDisplayNone')))
-						.to.be.false;
-				});
-
-				it('returns false if parent has visibility:hidden', function() {
-					expect(Visibility.isVisible(visibilityFixture.querySelector('#parentVisibilityNone')))
-						.to.be.false;
-				});
-
-			});
-
+		beforeEach(function() {
+			visibilityFixture = fixture('visibilityFixture')[1];
+			Visibility = D2L.Dom.Visibility;
 		});
 
-		</script>
+		it('returns true if it and all ancestors are visible', function() {
+			expect(Visibility.isVisible(visibilityFixture.querySelector('#default')))
+				.to.be.true;
+		});
+
+		it('returns false if web component ancestor has display:none', function() {
+			dom(visibilityFixture).setAttribute('hidden', true);
+			expect(Visibility.isVisible(visibilityFixture.querySelector('#default')))
+				.to.be.false;
+		});
+
+		it('returns false if web component shadow ancestor has display:none', function() {
+			dom(visibilityFixture).setAttribute('hidden-shadow', true);
+			expect(Visibility.isVisible(visibilityFixture.querySelector('#default')))
+				.to.be.false;
+		});
+
+		it('returns false if inline style has visibility:hidden', function() {
+			expect(Visibility.isVisible(visibilityFixture.querySelector('#visibilityHidden')))
+				.to.be.false;
+		});
+
+		it('returns false if inline style has display:none', function() {
+			expect(Visibility.isVisible(visibilityFixture.querySelector('#displayNone')))
+				.to.be.false;
+		});
+
+		it('returns false if inheriting visibility:hidden', function() {
+			expect(Visibility.isVisible(visibilityFixture.querySelector('#visibilityInheritHidden')))
+				.to.be.false;
+		});
+
+		it('returns false if inheriting display:none', function() {
+			expect(Visibility.isVisible(visibilityFixture.querySelector('#displayInheritNone')))
+				.to.be.false;
+		});
+
+		it('returns false if parent has display:none', function() {
+			expect(Visibility.isVisible(visibilityFixture.querySelector('#parentDisplayNone')))
+				.to.be.false;
+		});
+
+		it('returns false if parent has visibility:hidden', function() {
+			expect(Visibility.isVisible(visibilityFixture.querySelector('#parentVisibilityNone')))
+				.to.be.false;
+		});
+
+	});
+
+});
+</script>
 	</body>
 </html>

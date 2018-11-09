@@ -4,11 +4,12 @@
 		<meta charset="UTF-8">
 		<title>d2l-focusable-arrowkeys-behavior tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
-		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-		<link rel="import" href="../d2l-dom-focus.html">
-		<link rel="import" href="focusable-arrowkeys-behavior-components.html">
+		<script src="../../@babel/polyfill/browser.js"></script>
+		<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../../wct-browser-legacy/browser.js"></script>
+		<script type="module" src="../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+		<script type="module" src="../d2l-dom-focus.js"></script>
+		<script type="module" src="./focusable-arrowkeys-behavior-components.js"></script>
 	</head>
 	<body>
 
@@ -26,144 +27,147 @@
 			</test-fixture>
 		</div>
 
-		<script>
-		describe('d2l-focusable-arrowkeys-behavior', function() {
+		<script type="module">
+import '../../@polymer/iron-test-helpers/iron-test-helpers.js';
+import '../d2l-dom-focus.js';
+import './focusable-arrowkeys-behavior-components.js';
+import { afterNextRender } from '../../@polymer/polymer/lib/utils/render-status.js';
+describe('d2l-focusable-arrowkeys-behavior', function() {
 
-			var simpleFixture, focusables;
+	var simpleFixture, focusables;
 
-			var testKeyInteractions = function(keyInteractions) {
+	var testKeyInteractions = function(keyInteractions) {
 
+		for (var i = 0; i < keyInteractions.length; i++) {
+
+			(function(i) {
+
+				it(keyInteractions[i].name, function(done) {
+					simpleFixture.arrowKeyFocusablesOnBeforeFocus = function(elem) {
+						return new Promise(function(resolve) {
+							expect(elem).to.equal(focusables[keyInteractions[i].endIndex]);
+							resolve();
+						});
+					};
+					focusables[keyInteractions[i].startIndex].focus();
+					focusables[keyInteractions[i].endIndex].addEventListener('focus', function() {
+						expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteractions[i].endIndex]);
+						done();
+					});
+					MockInteractions.keyDownOn(focusables[keyInteractions[i].startIndex], keyInteractions[i].keyCode);
+				});
+
+			}(i));
+
+		}
+
+	};
+
+	describe('ltr', function() {
+
+		beforeEach(function(done) {
+			simpleFixture = fixture('simpleFixture');
+			simpleFixture.arrowKeyFocusablesProvider().then(function(result) {
+				focusables = result;
+				done();
+			});
+		});
+
+		describe('left-right', function() {
+
+			testKeyInteractions([
+				{ name: 'focuses on next focusable when Right arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 39 },
+				{ name: 'focuses on previous focusable when Left arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 37 },
+				{ name: 'focuses on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 39 },
+				{ name: 'focuses on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 37 },
+				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
+				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+			]);
+
+		});
+
+		describe('up-down', function() {
+
+			beforeEach(function(done) {
+				simpleFixture.arrowKeyFocusablesDirection = 'updown';
+				done();
+			});
+
+			testKeyInteractions([
+				{ name: 'focuses on next focusable when Down arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 40 },
+				{ name: 'focuses on previous focusable when Up arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 38 },
+				{ name: 'focuses on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 40 },
+				{ name: 'focuses on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 38 },
+				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
+				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+			]);
+
+		});
+
+		describe('nowrap - up-down-left-right', function() {
+
+			beforeEach(function(done) {
+				simpleFixture.arrowKeyFocusablesDirection = 'updownleftright';
+				simpleFixture.arrowKeyFocusablesNoWrap = true;
+				done();
+			});
+
+			var testNoWrap = function(keyInteractions) {
 				for (var i = 0; i < keyInteractions.length; i++) {
 
 					(function(i) {
 
 						it(keyInteractions[i].name, function(done) {
-							simpleFixture.arrowKeyFocusablesOnBeforeFocus = function(elem) {
-								return new Promise(function(resolve) {
-									expect(elem).to.equal(focusables[keyInteractions[i].endIndex]);
-									resolve();
-								});
-							};
 							focusables[keyInteractions[i].startIndex].focus();
-							focusables[keyInteractions[i].endIndex].addEventListener('focus', function() {
-								expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteractions[i].endIndex]);
+							MockInteractions.keyDownOn(focusables[[keyInteractions[i].startIndex]], keyInteractions[i].keyCode);
+
+							afterNextRender(simpleFixture, function() {
+								expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteractions[i].startIndex]);
 								done();
 							});
-							MockInteractions.keyDownOn(focusables[keyInteractions[i].startIndex], keyInteractions[i].keyCode);
 						});
 
 					}(i));
-
 				}
-
 			};
 
-			describe('ltr', function() {
-
-				beforeEach(function(done) {
-					simpleFixture = fixture('simpleFixture');
-					simpleFixture.arrowKeyFocusablesProvider().then(function(result) {
-						focusables = result;
-						done();
-					});
-				});
-
-				describe('left-right', function() {
-
-					testKeyInteractions([
-						{ name: 'focuses on next focusable when Right arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 39 },
-						{ name: 'focuses on previous focusable when Left arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 37 },
-						{ name: 'focuses on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 39 },
-						{ name: 'focuses on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 37 },
-						{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
-						{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
-					]);
-
-				});
-
-				describe('up-down', function() {
-
-					beforeEach(function(done) {
-						simpleFixture.arrowKeyFocusablesDirection = 'updown';
-						done();
-					});
-
-					testKeyInteractions([
-						{ name: 'focuses on next focusable when Down arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 40 },
-						{ name: 'focuses on previous focusable when Up arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 38 },
-						{ name: 'focuses on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 40 },
-						{ name: 'focuses on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 38 },
-						{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
-						{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
-					]);
-
-				});
-
-				describe('nowrap - up-down-left-right', function() {
-
-					beforeEach(function(done) {
-						simpleFixture.arrowKeyFocusablesDirection = 'updownleftright';
-						simpleFixture.arrowKeyFocusablesNoWrap = true;
-						done();
-					});
-
-					var testNoWrap = function(keyInteractions) {
-						for (var i = 0; i < keyInteractions.length; i++) {
-
-							(function(i) {
-
-								it(keyInteractions[i].name, function(done) {
-									focusables[keyInteractions[i].startIndex].focus();
-									MockInteractions.keyDownOn(focusables[[keyInteractions[i].startIndex]], keyInteractions[i].keyCode);
-
-									Polymer.RenderStatus.afterNextRender(simpleFixture, function() {
-										expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteractions[i].startIndex]);
-										done();
-									});
-								});
-
-							}(i));
-						}
-					};
-
-					testNoWrap([
-						{ name: 'does not focus on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, keyCode: 37 },
-						{ name: 'does not focus on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, keyCode: 38 },
-						{ name: 'does not focus on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, keyCode: 39 },
-						{ name: 'does not focus on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, keyCode: 40 }
-					]);
-
-				});
-
-			});
-
-			describe('rtl', function() {
-
-				beforeEach(function(done) {
-					simpleFixture = fixture('simpleFixtureRtl');
-					simpleFixture.arrowKeyFocusablesProvider().then(function(result) {
-						focusables = result;
-						done();
-					});
-				});
-
-				describe('left-right', function() {
-
-					testKeyInteractions([
-						{ name: 'focuses on previous focusable when Right arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 39 },
-						{ name: 'focuses on next focusable when Left arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 37 },
-						{ name: 'focuses on first focusable when Left arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 37 },
-						{ name: 'focuses on last focusable when Right arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 39 },
-						{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
-						{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
-					]);
-
-				});
-
-			});
+			testNoWrap([
+				{ name: 'does not focus on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, keyCode: 37 },
+				{ name: 'does not focus on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, keyCode: 38 },
+				{ name: 'does not focus on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, keyCode: 39 },
+				{ name: 'does not focus on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, keyCode: 40 }
+			]);
 
 		});
 
-		</script>
+	});
+
+	describe('rtl', function() {
+
+		beforeEach(function(done) {
+			simpleFixture = fixture('simpleFixtureRtl');
+			simpleFixture.arrowKeyFocusablesProvider().then(function(result) {
+				focusables = result;
+				done();
+			});
+		});
+
+		describe('left-right', function() {
+
+			testKeyInteractions([
+				{ name: 'focuses on previous focusable when Right arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 39 },
+				{ name: 'focuses on next focusable when Left arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 37 },
+				{ name: 'focuses on first focusable when Left arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 37 },
+				{ name: 'focuses on last focusable when Right arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 39 },
+				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
+				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+			]);
+
+		});
+
+	});
+
+});
+</script>
 	</body>
 </html>
