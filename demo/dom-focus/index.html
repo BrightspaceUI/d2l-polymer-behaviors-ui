@@ -56,13 +56,13 @@
 
 		function focusNext(target) {
 			var focusable =	D2L.Dom.Focus.getNextFocusable(target);
-			console.log(focusable);
+			console.log(focusable); /* eslint-disable-line no-console */
 			focusable.focus();
 		}
 
 		function focusPrevious(target) {
 			var focusable =	D2L.Dom.Focus.getPreviousFocusable(target);
-			console.log(focusable);
+			console.log(focusable); /* eslint-disable-line no-console */
 			focusable.focus();
 		}
 
@@ -71,7 +71,7 @@
 			var count = 0;
 			while (focusable) {
 				count += 1;
-				console.log(count, focusable);
+				console.log(count, focusable); /* eslint-disable-line no-console */
 				focusable = D2L.Dom.Focus.getNextFocusable(focusable);
 			}
 		}
@@ -81,7 +81,7 @@
 			var count = 0;
 			while (focusable && focusable.tagName !== 'BUTTON') {
 				count += 1;
-				console.log(count, focusable);
+				console.log(count, focusable); /* eslint-disable-line no-console */
 				focusable = D2L.Dom.Focus.getPreviousFocusable(focusable);
 			}
 		}

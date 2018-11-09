@@ -38,9 +38,9 @@
 	function expand(id) {
 		D2L.Dom.ExpandCollapse.expand(document.getElementById(id))
 			.then(function() {
-				console.log('expanded!');
+				console.log('expanded!'); /* eslint-disable-line no-console */
 			}).catch(function(reason) {
-				console.log(reason);
+				console.log(reason); /* eslint-disable-line no-console */
 			});
 	}
 
@@ -48,9 +48,9 @@
 	function collapse(id) {
 		D2L.Dom.ExpandCollapse.collapse(document.getElementById(id))
 			.then(function() {
-				console.log('collapsed!');
+				console.log('collapsed!'); /* eslint-disable-line no-console */
 			}).catch(function(reason) {
-				console.log(reason);
+				console.log(reason); /* eslint-disable-line no-console */
 			});
 	}
 
