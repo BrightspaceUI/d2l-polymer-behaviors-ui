@@ -45,19 +45,15 @@
 		<script type="module">
 import '../d2l-dom.js';
 import './dom-components.js';
-import { useShadow } from '../../@polymer/polymer/lib/utils/settings.js';
-import { Element } from '../../@polymer/polymer/polymer-element.js';
 import { dom as dom$0 } from '../../@polymer/polymer/lib/legacy/polymer.dom.js';
 describe('d2l-dom', function() {
 
 	var simpleFixture, wcFixture, mixedFixture;
-	var shadow;
 
 	beforeEach(function() {
 		simpleFixture = fixture('simpleFixture');
 		wcFixture = fixture('wcFixture');
 		mixedFixture = fixture('mixedFixture');
-		shadow = undefined.dom === 'shadow' || useShadow;
 	});
 
 	describe('findComposedAncestor', function() {
@@ -113,10 +109,8 @@ describe('d2l-dom', function() {
 		it('returns distributed child elements for insertion point', function() {
 			var container = wcFixture.getContainer();
 			var children = D2L.Dom.getComposedChildren(container);
-			if (shadow || Element) {
-				expect(children[0].tagName).to.be.oneOf(['SLOT', 'CONTENT']);
-				children = D2L.Dom.getComposedChildren(children[0]);
-			}
+			expect(children[0].tagName).to.be.oneOf(['SLOT', 'CONTENT']);
+			children = D2L.Dom.getComposedChildren(children[0]);
 			expect(children.length).to.equal(2);
 			expect(children[0]).to.equal(wcFixture.querySelector('#light1'));
 			expect(children[1]).to.equal(wcFixture.querySelector('#light2'));
@@ -132,23 +126,13 @@ describe('d2l-dom', function() {
 		});
 
 		it('returns insertion point as parent of distributed node', function() {
-			if (shadow || Element) {
-				expect(D2L.Dom.getComposedParent(wcFixture.querySelector('#light1')))
-					.to.equal(dom$0(wcFixture.querySelector('#light1')).getDestinationInsertionPoints()[0]);
-			} else {
-				expect(D2L.Dom.getComposedParent(wcFixture.querySelector('#light1')))
-					.to.equal(wcFixture.getContainer());
-			}
+			expect(D2L.Dom.getComposedParent(wcFixture.querySelector('#light1')))
+				.to.equal(dom$0(wcFixture.querySelector('#light1')).getDestinationInsertionPoints()[0]);
 		});
 
 		it('returns host as parent of shadow-root', function() {
-			if (shadow || Element) {
-				expect(D2L.Dom.getComposedParent(wcFixture.root))
-					.to.equal(wcFixture);
-			} else {
-				expect(D2L.Dom.getComposedParent(wcFixture.getContainer()))
-					.to.equal(wcFixture);
-			}
+			expect(D2L.Dom.getComposedParent(wcFixture.root))
+				.to.equal(wcFixture);
 		});
 
 		it('returns null as parent of detached element', function() {
