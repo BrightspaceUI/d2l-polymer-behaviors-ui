@@ -1,10 +1,10 @@
 <html>
 <head>
 	<title>D2L DOM Expand/Collapse</title>
-	<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 	<link rel="stylesheet" href="../demo-styles.css">
-	<link rel="import" href="../../../polymer/polymer.html">
-	<link rel="import" href="../../d2l-dom-expand-collapse.html">
+	<script type="module" src="../../../@polymer/polymer/polymer-legacy.js"></script>
+	<script type="module" src="../../d2l-dom-expand-collapse.js"></script>
 	<style>
 		.fixture {
 			box-sizing: border-box;
@@ -33,25 +33,26 @@
 		</div></div>
 	</div>
 
-	<script>
-	document.getElementById('expand').addEventListener('click', function() {
-		D2L.Dom.ExpandCollapse.expand(document.getElementById('container1'))
-			.then(function() {
-				console.log('expanded!'); /* eslint-disable-line no-console */
-			}).catch(function(reason) {
-				console.log(reason); /* eslint-disable-line no-console */
-			});
-	});
+	<script type="module">
+import '../../../@polymer/polymer/polymer-legacy.js';
+import '../../d2l-dom-expand-collapse.js';
+document.getElementById('expand').addEventListener('click', function() {
+	D2L.Dom.ExpandCollapse.expand(document.getElementById('container1'))
+		.then(function() {
+			console.log('expanded!'); /* eslint-disable-line no-console */
+		}).catch(function(reason) {
+			console.log(reason); /* eslint-disable-line no-console */
+		});
+});
 
-	document.getElementById('collapse').addEventListener('click', function() {
-		D2L.Dom.ExpandCollapse.collapse(document.getElementById('container1'))
-			.then(function() {
-				console.log('collapsed!'); /* eslint-disable-line no-console */
-			}).catch(function(reason) {
-				console.log(reason); /* eslint-disable-line no-console */
-			});
-	});
-
-	</script>
+document.getElementById('collapse').addEventListener('click', function() {
+	D2L.Dom.ExpandCollapse.collapse(document.getElementById('container1'))
+		.then(function() {
+			console.log('collapsed!'); /* eslint-disable-line no-console */
+		}).catch(function(reason) {
+			console.log(reason); /* eslint-disable-line no-console */
+		});
+});
+</script>
 </body>
 </html>

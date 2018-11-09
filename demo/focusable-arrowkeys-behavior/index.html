@@ -1,10 +1,10 @@
 <html>
 <head>
 	<title>D2L Focusable Arrow-Keys Behavior</title>
-	<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 	<link rel="stylesheet" href="../demo-styles.css">
-	<link rel="import" href="../../../polymer/polymer.html">
-	<link rel="import" href="d2l-focusable-arrowkeys-component.html">
+	<script type="module" src="../../../@polymer/polymer/polymer-legacy.js"></script>
+	<script type="module" src="./d2l-focusable-arrowkeys-component.js"></script>
 	<style>
 	</style>
 </head>
@@ -16,6 +16,9 @@
 
 	<d2l-focusable-arrowkeys-component></d2l-focusable-arrowkeys-component>
 
-	<script></script>
+	<script type="module">
+import '../../../@polymer/polymer/polymer-legacy.js';
+import './d2l-focusable-arrowkeys-component.js';
+</script>
 </body>
 </html>

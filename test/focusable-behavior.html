@@ -4,11 +4,12 @@
 		<meta charset="UTF-8">
 		<title>d2l-focusable-behavior tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
-		<link rel="import" href="../../polymer/polymer.html">
-		<link rel="import" href="../d2l-dom-focus.html">
-		<link rel="import" href="focusable-behavior-components.html">
+		<script src="../../@babel/polyfill/browser.js"></script>
+		<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../../wct-browser-legacy/browser.js"></script>
+		<script type="module" src="../../@polymer/polymer/polymer-legacy.js"></script>
+		<script type="module" src="../d2l-dom-focus.js"></script>
+		<script type="module" src="./focusable-behavior-components.js"></script>
 	</head>
 	<body>
 
@@ -20,66 +21,68 @@
 			</template>
 		</test-fixture>
 
-		<script>
-		describe('d2l-focusable-behavior', function() {
+		<script type="module">
+import '../../@polymer/polymer/polymer-legacy.js';
+import '../d2l-dom-focus.js';
+import './focusable-behavior-components.js';
+describe('d2l-focusable-behavior', function() {
 
-			var simpleFixture;
+	var simpleFixture;
 
-			beforeEach(function() {
-				simpleFixture = fixture('simpleFixture');
-			});
+	beforeEach(function() {
+		simpleFixture = fixture('simpleFixture');
+	});
 
-			it('does not initially have focus applied to the d2l-focusable element', function() {
-				expect(document.activeElement).to.equal(document.body);
-			});
+	it('does not initially have focus applied to the d2l-focusable element', function() {
+		expect(document.activeElement).to.equal(document.body);
+	});
 
-			it('focuses on element with d2l-focusable when focus method is called', function() {
-				simpleFixture.focus();
-				expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(simpleFixture.getShadow2());
-			});
+	it('focuses on element with d2l-focusable when focus method is called', function() {
+		simpleFixture.focus();
+		expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(simpleFixture.getShadow2());
+	});
 
-			it('triggers the focus event when focus method is called on custom element', function(done) {
-				simpleFixture.addEventListener('focus', function() {
-					done();
-				});
-				simpleFixture.focus();
-			});
-
-			it('triggers the focus event when focus method is called on focusable element', function(done) {
-				simpleFixture.addEventListener('focus', function() {
-					done();
-				});
-				simpleFixture.getShadow2().focus();
-			});
-
-			it('triggers the blur event when custom element is blurred', function(done) {
-				simpleFixture.focus();
-				simpleFixture.addEventListener('blur', function() {
-					done();
-				});
-				var outside = simpleFixture.querySelector('#light1');
-				outside.focus();
-			});
-
-			it('triggers the blur event when custom element focusable element is blurred', function(done) {
-				simpleFixture.addEventListener('blur', function() {
-					done();
-				});
-				simpleFixture.getShadow2().focus();
-				var outside = simpleFixture.querySelector('#light1');
-				outside.focus();
-			});
-
-			it('triggers the blur event on light DOM element when focus method is called on custom element', function(done) {
-				var startingElement = simpleFixture.querySelector('#light1');
-				startingElement.focus();
-				startingElement.addEventListener('blur', function() {
-					done();
-				});
-				simpleFixture.focus();
-			});
+	it('triggers the focus event when focus method is called on custom element', function(done) {
+		simpleFixture.addEventListener('focus', function() {
+			done();
 		});
+		simpleFixture.focus();
+	});
 
-		</script>
+	it('triggers the focus event when focus method is called on focusable element', function(done) {
+		simpleFixture.addEventListener('focus', function() {
+			done();
+		});
+		simpleFixture.getShadow2().focus();
+	});
+
+	it('triggers the blur event when custom element is blurred', function(done) {
+		simpleFixture.focus();
+		simpleFixture.addEventListener('blur', function() {
+			done();
+		});
+		var outside = simpleFixture.querySelector('#light1');
+		outside.focus();
+	});
+
+	it('triggers the blur event when custom element focusable element is blurred', function(done) {
+		simpleFixture.addEventListener('blur', function() {
+			done();
+		});
+		simpleFixture.getShadow2().focus();
+		var outside = simpleFixture.querySelector('#light1');
+		outside.focus();
+	});
+
+	it('triggers the blur event on light DOM element when focus method is called on custom element', function(done) {
+		var startingElement = simpleFixture.querySelector('#light1');
+		startingElement.focus();
+		startingElement.addEventListener('blur', function() {
+			done();
+		});
+		simpleFixture.focus();
+	});
+});
+</script>
 	</body>
 </html>
