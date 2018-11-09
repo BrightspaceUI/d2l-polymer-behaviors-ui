@@ -204,7 +204,7 @@
 						requestAnimationFrame(function() {
 							expect(isDisplayed(elem)).to.equal(false);
 							done();
-						}.bind(this));
+						}.bind(this)); /* eslint-disable-line no-invalid-this */
 
 					});
 
@@ -221,7 +221,7 @@
 								expect(isDisplayed(elem)).to.equal(false);
 								done();
 							});
-						}.bind(this));
+						}.bind(this)); /* eslint-disable-line no-invalid-this */
 					});
 				});
 
@@ -236,7 +236,7 @@
 								expect(isDisplayed(elem)).to.equal(true);
 								done();
 							});
-						}.bind(this));
+						}.bind(this)); /* eslint-disable-line no-invalid-this */
 					});
 				});
 
@@ -255,7 +255,7 @@
 									done();
 								});
 							});
-						}.bind(this));
+						}.bind(this)); /* eslint-disable-line no-invalid-this */
 					});
 				});
 

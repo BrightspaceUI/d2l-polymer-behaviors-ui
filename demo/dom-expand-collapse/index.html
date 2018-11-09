@@ -24,8 +24,8 @@
 	<h1>d2l-dom-expand-collapse</h1>
 
 	<div style="width: 60%;">
-		<button onclick="collapse('container1');">Collapse</button>
-		<button onclick="expand('container1');">Expand</button>
+		<button id="collapse">Collapse</button>
+		<button id="expand">Expand</button>
 		<div id="container1" class="fixture"><div>
 			Lorem ipsum dolor sit amet, scelerisque consectetuer lacus quam lectus orci, suscipit at duis, felis ligula pellentesque, dapibus mauris natoque eros sed, suspendisse wisi non. Non dictum turpis magna elit in eros, nostra tempor vulputate malesuada. Arcu imperdiet amet est massa. Sociis phasellus aliquip vel vestibulum rutrum magnis, fusce metus class mi lorem dolor integer, in leo. Imperdiet consequat, urna ipsum ipsum mauris, vel pellentesque rutrum in, metus cras etiam, leo ut. Luctus aliquet, urna condimentum nulla in, et libero. Quis ut vitae. Morbi in at est et, quod ullamcorper feugiat diam lacinia, in egestas lorem ornare. Cursus id nec ante, amet quam in at nibh, primis eget ac consectetuer massa blandit. Vivamus posuere. Porta tempora mauris et, nullam corporis, wisi luctus vestibulum neque nunc, risus venenatis cras libero morbi.
 
@@ -34,25 +34,23 @@
 	</div>
 
 	<script>
-
-	function expand(id) {
-		D2L.Dom.ExpandCollapse.expand(document.getElementById(id))
+	document.getElementById('expand').addEventListener('click', function() {
+		D2L.Dom.ExpandCollapse.expand(document.getElementById('container1'))
 			.then(function() {
-				console.log('expanded!');
+				console.log('expanded!'); /* eslint-disable-line no-console */
 			}).catch(function(reason) {
-				console.log(reason);
+				console.log(reason); /* eslint-disable-line no-console */
 			});
-	}
+	});
 
-
-	function collapse(id) {
-		D2L.Dom.ExpandCollapse.collapse(document.getElementById(id))
+	document.getElementById('collapse').addEventListener('click', function() {
+		D2L.Dom.ExpandCollapse.collapse(document.getElementById('container1'))
 			.then(function() {
-				console.log('collapsed!');
+				console.log('collapsed!'); /* eslint-disable-line no-console */
 			}).catch(function(reason) {
-				console.log(reason);
+				console.log(reason); /* eslint-disable-line no-console */
 			});
-	}
+	});
 
 	</script>
 </body>
