@@ -21,21 +21,21 @@
 	<h2>getNextFocusable</h2>
 
 	<div style="width: 60%;">
-		<button onclick="focusNext(document.querySelector('#light1'));">Next from Light 1</button>
-		<button onclick="focusNext(document.querySelector('#wc1'));">Next from WC</button>
-		<button onclick="focusNext(document.querySelector('#wc1').getShadow1());">Next from Shadow 1</button>
-		<button onclick="focusNext(document.querySelector('#light2'));">Next from Light 2</button>
-		<button onclick="focusNext(document.querySelector('#wc1').getShadow2());">Next from Shadow 2</button>
+		<button id="focusNextFromLight1">Next from Light 1</button>
+		<button id="focusNextFromWC1">Next from WC</button>
+		<button id="focusNextFromShadow1">Next from Shadow 1</button>
+		<button id="focusNextFromLight2">Next from Light 2</button>
+		<button id="focusNextFromShadow2">Next from Shadow 2</button>
 	</div>
 
 	<h2>getPreviousFocusable</h2>
 
 	<div style="width: 60%;">
-		<button onclick="focusPrevious(document.querySelector('#light3'));">Previous from Light 3</button>
-		<button onclick="focusPrevious(document.querySelector('#wc1').getShadow2());">Previous from Shadow 2</button>
-		<button onclick="focusPrevious(document.querySelector('#light2'));">Previous from Light 2</button>
-		<button onclick="focusPrevious(document.querySelector('#wc1').getShadow1());">Previous from Shadow 1</button>
-		<button onclick="focusPrevious(document.querySelector('#wc1'));">Previous from WC</button>
+		<button id="focusPreviousFromLight3">Previous from Light 3</button>
+		<button id="focusPreviousFromShadow2">Previous from Shadow 2</button>
+		<button id="focusPreviousFromLight2">Previous from Light 2</button>
+		<button id="focusPreviousFromShadow1">Previous from Shadow 1</button>
+		<button id="focusPreviousFromWC1">Previous from WC</button>
 	</div>
 
 	<h2>Component</h2>
@@ -53,17 +53,57 @@
 	<div id="endFixture"></div>
 
 	<script>
-		function focusNext(target) { /* eslint-disable-line no-unused-vars */
+		function focusNext(target) {
 			var focusable =	D2L.Dom.Focus.getNextFocusable(target);
 			console.log(focusable); /* eslint-disable-line no-console */
 			focusable.focus();
 		}
 
-		function focusPrevious(target) { /* eslint-disable-line no-unused-vars */
+		function focusPrevious(target) {
 			var focusable =	D2L.Dom.Focus.getPreviousFocusable(target);
 			console.log(focusable); /* eslint-disable-line no-console */
 			focusable.focus();
 		}
+
+		document.getElementById('focusNextFromLight1').addEventListener('click', function() {
+			focusNext(document.querySelector('#light1'));
+		});
+
+		document.getElementById('focusNextFromWC1').addEventListener('click', function() {
+			focusNext(document.querySelector('#wc1'));
+		});
+
+		document.getElementById('focusNextFromShadow1').addEventListener('click', function() {
+			focusNext(document.querySelector('#wc1').getShadow1());
+		});
+
+		document.getElementById('focusNextFromLight2').addEventListener('click', function() {
+			focusNext(document.querySelector('#light2'));
+		});
+
+		document.getElementById('focusNextFromShadow2').addEventListener('click', function() {
+			focusNext(document.querySelector('#wc1').getShadow2());
+		});
+
+		document.getElementById('focusPreviousFromLight3').addEventListener('click', function() {
+			focusPrevious(document.querySelector('#light3'));
+		});
+
+		document.getElementById('focusPreviousFromShadow2').addEventListener('click', function() {
+			focusPrevious(document.querySelector('#wc1').getShadow2());
+		});
+
+		document.getElementById('focusPreviousFromLight2').addEventListener('click', function() {
+			focusPrevious(document.querySelector('#light2'));
+		});
+
+		document.getElementById('focusPreviousFromShadow1').addEventListener('click', function() {
+			focusPrevious(document.querySelector('#wc1').getShadow1());
+		});
+
+		document.getElementById('focusPreviousFromWC1').addEventListener('click', function() {
+			focusPrevious(document.querySelector('#wc1'));
+		});
 
 		document.getElementById('logForwardOrder').addEventListener('click', function() {
 			var focusable = D2L.Dom.Focus.getNextFocusable(document.getElementById('fixture'));
