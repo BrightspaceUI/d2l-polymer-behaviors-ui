@@ -14,8 +14,8 @@
 	<h2>focus order</h2>
 
 	<div style="width: 60%;">
-		<button onclick="logForwardOrder();">Log Forward Order</button>
-		<button onclick="logReverseOrder();">Log Reverse Order</button>
+		<button id="logForwardOrder">Log Forward Order</button>
+		<button id="logReverseOrder">Log Reverse Order</button>
 	</div>
 
 	<h2>getNextFocusable</h2>
@@ -53,20 +53,19 @@
 	<div id="endFixture"></div>
 
 	<script>
-
-		function focusNext(target) {
+		function focusNext(target) { /* eslint-disable-line no-unused-vars */
 			var focusable =	D2L.Dom.Focus.getNextFocusable(target);
 			console.log(focusable); /* eslint-disable-line no-console */
 			focusable.focus();
 		}
 
-		function focusPrevious(target) {
+		function focusPrevious(target) { /* eslint-disable-line no-unused-vars */
 			var focusable =	D2L.Dom.Focus.getPreviousFocusable(target);
 			console.log(focusable); /* eslint-disable-line no-console */
 			focusable.focus();
 		}
 
-		function logForwardOrder() {
+		document.getElementById('logForwardOrder').addEventListener('click', function() {
 			var focusable = D2L.Dom.Focus.getNextFocusable(document.getElementById('fixture'));
 			var count = 0;
 			while (focusable) {
@@ -74,9 +73,9 @@
 				console.log(count, focusable); /* eslint-disable-line no-console */
 				focusable = D2L.Dom.Focus.getNextFocusable(focusable);
 			}
-		}
+		});
 
-		function logReverseOrder() {
+		document.getElementById('logReverseOrder').addEventListener('click', function() {
 			var focusable = D2L.Dom.Focus.getPreviousFocusable(document.getElementById('endFixture'));
 			var count = 0;
 			while (focusable && focusable.tagName !== 'BUTTON') {
@@ -84,7 +83,7 @@
 				console.log(count, focusable); /* eslint-disable-line no-console */
 				focusable = D2L.Dom.Focus.getPreviousFocusable(focusable);
 			}
-		}
+		});
 
 	</script>
 </body>

@@ -56,8 +56,8 @@
 	</div>
 
 	<div style="margin-top: 1rem;">
-		<button onclick="moveToTarget('target2');">move to target 2</button>
-		<button onclick="moveToTarget('target3');">move to target 3</button>
+		<button id="moveToTarget2">move to target 2</button>
+		<button id="moveToTarget3">move to target 3</button>
 	</div>
 
 	<script>
@@ -77,6 +77,15 @@
 			parent.appendChild(wc);
 
 		}
+
+		document.getElementById('moveToTarget2').addEventListener('click', function() {
+			moveToTarget('target2');
+		});
+
+		document.getElementById('moveToTarget3').addEventListener('click', function() {
+			moveToTarget('target3');
+		});
+
 	</script>
 </body>
 </html>
