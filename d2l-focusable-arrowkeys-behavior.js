@@ -1,5 +1,5 @@
-import '../@polymer/polymer/polymer-legacy.js';
-import '../fastdom/fastdom.js';
+import '@polymer/polymer/polymer-legacy.js';
+import 'fastdom/fastdom.js';
 window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 

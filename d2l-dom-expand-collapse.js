@@ -1,5 +1,5 @@
 import './d2l-dom.js';
-import '../fastdom/fastdom.js';
+import 'fastdom/fastdom.js';
 
 var ExpandCollapse = {
 
