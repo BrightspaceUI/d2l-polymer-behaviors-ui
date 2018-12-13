@@ -58,7 +58,7 @@
 				var transitionEnd = function() {
 					node.removeEventListener('transitionend', transitionEnd);
 					fastdom.mutate(function() {
-						node.style.display = 'none';
+						node.style.display = '';
 						resolve();
 					});
 				};
