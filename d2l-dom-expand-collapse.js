@@ -28,7 +28,7 @@ var ExpandCollapse = {
 				node.style.overflow = 'hidden';
 				node.style.transition = '';
 				node.style.height = '0px';
-				node.style.display = node.getAttribute('data-d2l-ec-display');
+				node.style.display = node.getAttribute('data-d2l-ec-display') ? node.getAttribute('data-d2l-ec-display') : '';
 				node.removeAttribute('data-d2l-ec-display');
 				if (node.classList.contains('d2l-hidden')) node.classList.remove('d2l-hidden');
 
