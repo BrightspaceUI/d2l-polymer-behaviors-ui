@@ -2,7 +2,11 @@
 (function() {
 	'use strict';
 
-	var Dom = {
+	window.D2L = window.D2L || {};
+	window.D2L.Dom = Dom;
+
+	/** @polymerBehavior */
+	D2L.Dom = {
 
 		findComposedAncestor: function(node, predicate) {
 			while (node) {
@@ -76,9 +80,6 @@
 		}
 
 	};
-
-	window.D2L = window.D2L || {};
-	window.D2L.Dom = Dom;
 
 })();
 </script>
