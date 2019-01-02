@@ -1,4 +1,7 @@
-var Dom = {
+window.D2L = window.D2L || {};
+
+/** @polymerBehavior */
+D2L.Dom = {
 
 	findComposedAncestor: function(node, predicate) {
 		while (node) {
@@ -72,6 +75,3 @@ var Dom = {
 	}
 
 };
-
-window.D2L = window.D2L || {};
-window.D2L.Dom = Dom;
