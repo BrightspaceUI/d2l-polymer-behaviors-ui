@@ -2,18 +2,3 @@ language: node_js
 node_js: node
 script:
 - npm run test:lint
-- |
-  if [ "$TRAVIS_BRANCH" == "master" ] && [ $TRAVIS_PULL_REQUEST == false ]; then
-    echo "Not a Pull Request and on branch master so bumping version";
-    frauci-update-version;
-    export TRAVIS_TAG=$(frauci-get-version)
-  fi
-deploy:
-  provider: releases
-  api_key: "$GITHUB_RELEASE_TOKEN"
-  on:
-    tags: true
-env:
-  global:
-  - REPO_NAME=d2l-polymer-behaviors-ui
-  - secure: S06ax8mrCs7eFzmthGr4nHg2ZrrGOLgEfs81WQ5kpacUL9ddu+Gl7gSVUD7XyDTra/+JJEhKZlKmj8GtKFNWaGi5JmugUh6ekUD9HX1DjKl1KSvDXjtIWcQiubgG5XJGW5VcMgx6W2TrxJKDG9ne4tw1IG5bOaa5SNz+fUJmGP6mAVgC68JyJGeFZqvHPebgTBV2nhcE2bAEckCbMGzwp7rikct5xxqN5dCYL5CgNxeXucmEYZx8D9CRH63MqVATRM027qtWpYT2Bnl1HGZhqZcAG/5FmWti8Ufm+Gr6vhnIrjNcd5CB4z2WWip0MNgdO++wI9VNEf+OzlAycFJ1/lwpxP7S6Ftl3YG611Qa/Cf+cl50JaT/V9ZM8N3py5d0mzvCfJYeRBvkNshFscDmS8KLi3J+u6ofzhJDz901HLQQPYfKrexsC15wJiWYSMtgReXnZ+GqnThUIwfBteRpsn2zmayV++4s9rZjmpoH7v+VFi/q0VxHyZ9T4HUAMwyayYvsQmVuqNsiB09uCFG4F8XEtj0nLtxl42TEtZ58eIcYDp6dl3psZCnvc7l7ZZMR4fJKQDco4saSYRDfY0Qgy43ZhT7NPXeQJnhiF37xd6QeFlt5wIhktrkkA6v6MH8evsCdTBXuokVWmot3eY6ZIZvtuNK1MDHNsk5ooHVJJ0g=
