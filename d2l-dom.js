@@ -89,7 +89,7 @@ D2L.Dom = {
 
 		let currentNode = this.getComposedParent(node);
 		while (currentNode) {
-			if (currentNode instanceof ShadowRoot ) {
+			if (currentNode instanceof ShadowRoot) {
 				currentNode = this.getComposedParent(currentNode);
 			}
 			const position = window.getComputedStyle(currentNode).position;
