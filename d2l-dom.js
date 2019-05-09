@@ -72,6 +72,40 @@ D2L.Dom = {
 		return this.findComposedAncestor(node, function(node) {
 			return (node === ancestorNode);
 		}) !== null;
+	},
+
+	getOffsetParent: function(node) {
+		if (!window.ShadowRoot) {
+			return node.offsetParent;
+		}
+
+		if (
+			!this.getComposedParent(node) ||
+			node.tagName === 'BODY' ||
+			window.getComputedStyle(node).position === 'fixed'
+		) {
+			return null;
+		}
+
+		let currentNode = this.getComposedParent(node);
+		while (currentNode) {
+			if (currentNode instanceof ShadowRoot ) {
+				currentNode = this.getComposedParent(currentNode);
+			}
+			const position = window.getComputedStyle(currentNode).position;
+			const tagName = currentNode.tagName;
+
+			if (
+				(position && position !== 'static') ||
+				tagName === 'BODY' ||
+				position === 'static' && (tagName === 'TD' || tagName === 'TH' || tagName === 'TABLE')
+			) {
+				return currentNode;
+			}
+			currentNode = this.getComposedParent(currentNode);
+		}
+
+		return null;
 	}
 
 };

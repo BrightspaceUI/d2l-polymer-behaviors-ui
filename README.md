@@ -38,6 +38,9 @@ D2L.Dom.getComposedParent(node);
 
 // returns true/false whether the specified ancestorNode is an ancestor of node
 D2L.Dom.isComposedAncestor(ancestorNode, node);
+
+// browser consistent implementation of HTMLElement.offsetParent
+D2L.Dom.getOffsetParent(node);
 ```
 
 **D2L.Dom.Focus**
