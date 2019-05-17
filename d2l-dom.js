@@ -91,6 +91,8 @@ D2L.Dom = {
 		while (currentNode) {
 			if (currentNode instanceof ShadowRoot) {
 				currentNode = this.getComposedParent(currentNode);
+			} else if (currentNode instanceof DocumentFragment) {
+				return null;
 			}
 			const position = window.getComputedStyle(currentNode).position;
 			const tagName = currentNode.tagName;
