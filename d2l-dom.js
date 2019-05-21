@@ -93,13 +93,14 @@ D2L.Dom = {
 				currentNode = this.getComposedParent(currentNode);
 			} else if (currentNode instanceof DocumentFragment) {
 				return null;
+			} else if (currentNode.tagName === 'BODY') {
+				return currentNode;
 			}
 			const position = window.getComputedStyle(currentNode).position;
 			const tagName = currentNode.tagName;
 
 			if (
 				(position && position !== 'static') ||
-				tagName === 'BODY' ||
 				position === 'static' && (tagName === 'TD' || tagName === 'TH' || tagName === 'TABLE')
 			) {
 				return currentNode;
