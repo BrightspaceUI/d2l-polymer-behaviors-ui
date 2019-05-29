@@ -19,6 +19,7 @@ var Focus = {
 
 	getComposedActiveElement: function() {
 		var node = document.activeElement;
+		if (!node) return null;
 		while (node.shadowRoot) {
 			if (node.shadowRoot.activeElement) {
 				node = node.shadowRoot.activeElement;
