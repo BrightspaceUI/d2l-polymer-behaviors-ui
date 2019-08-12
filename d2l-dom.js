@@ -1,17 +1,22 @@
-import * as dom from '@brightspace-ui/core/helpers/dom.js';
+import {
+	findComposedAncestor,
+	getComposedChildren,
+	getComposedParent,
+	isComposedAncestor
+} from '@brightspace-ui/core/helpers/dom.js';
 
 window.D2L = window.D2L || {};
 
 /** @polymerBehavior */
 D2L.Dom = {
 
-	findComposedAncestor: dom.findComposedAncestor,
+	findComposedAncestor: findComposedAncestor,
 
-	getComposedChildren: dom.getComposedChildren,
+	getComposedChildren: getComposedChildren,
 
-	getComposedParent: dom.getComposedParent,
+	getComposedParent: getComposedParent,
 
-	isComposedAncestor: dom.isComposedAncestor,
+	isComposedAncestor: isComposedAncestor,
 
 	getOffsetParent: function(node) {
 		if (!window.ShadowRoot) {
