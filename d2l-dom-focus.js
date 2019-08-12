@@ -1,20 +1,28 @@
-import * as core from '@brightspace-ui/core/helpers/focus.js';
+import {
+	getComposedActiveElement,
+	getFirstFocusableDescendant,
+	getLastFocusableDescendant,
+	getPreviousFocusable,
+	getPreviousFocusableAncestor,
+	getNextFocusable,
+	isFocusable
+} from '@brightspace-ui/core/helpers/focus.js';
 
 var Focus = {
 
-	getComposedActiveElement: core.getComposedActiveElement,
+	getComposedActiveElement: getComposedActiveElement,
 
-	getFirstFocusableDescendant: core.getFirstFocusableDescendant,
+	getFirstFocusableDescendant: getFirstFocusableDescendant,
 
-	getLastFocusableDescendant: core.getLastFocusableDescendant,
+	getLastFocusableDescendant: getLastFocusableDescendant,
 
-	getPreviousFocusable: core.getPreviousFocusable,
+	getPreviousFocusable: getPreviousFocusable,
 
-	getNextFocusable: core.getNextFocusable,
+	getNextFocusable: getNextFocusable,
 
-	getPreviousFocusableAncestor: core.getPreviousFocusableAncestor,
+	getPreviousFocusableAncestor: getPreviousFocusableAncestor,
 
-	isFocusable: core.isFocusable
+	isFocusable: isFocusable
 
 };
 
