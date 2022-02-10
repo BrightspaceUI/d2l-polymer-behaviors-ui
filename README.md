@@ -11,6 +11,7 @@ Shared [Polymer](https://www.polymer-project.org/1.0/)-based behaviors and modul
 bower install d2l-polymer-behaviors
 ```
 
+
 ## Usage
 
 Include the [webcomponents.js](http://webcomponents.org/polyfills/) "lite" polyfill (for browsers who don't natively support web components), then import the component or scripts as needed.
