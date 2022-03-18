@@ -176,16 +176,14 @@ In production, it's recommended to use a build tool like [Vulcanize](https://git
 
 See the [VUI Best Practices & Style Guide](https://github.com/Brightspace/valence-ui-docs/wiki/Best-Practices-&-Style-Guide) for information on VUI naming conventions, plus information about the [EditorConfig](http://editorconfig.org) rules used in this repo.
 
-[bower-url]: http://bower.io/search/?q=d2l-polymer-behaviors
-[bower-image]: https://img.shields.io/bower/v/d2l-polymer-behaviors.svg
-[ci-url]: https://travis-ci.org/Brightspace/d2l-polymer-behaviors-ui
-[ci-image]: https://travis-ci.org/Brightspace/d2l-polymer-behaviors-ui.svg?branch=master
+![Build status](https://github.com/BrightspaceUI/progress/workflows/CI/badge.svg)
 
 ## Versioning
 
-Commits and PR merges to master will automatically do a minor version bump which will:
-* Update the version in `package.json`
-* Add a tag matching the new version
-* Create a github release matching the new version
+All version changes should obey [semantic versioning](https://semver.org/) rules.
 
-By using either **[increment major]** or **[increment patch]** notation inside your merge message, you can overwrite the default version upgrade of minor to the position of your choice.
+Releases use the [semantic-release](https://semantic-release.gitbook.io/) tooling and the [angular preset](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular) for commit message syntax. Upon release, the version in `package.json` is updated, a tag and GitHub release is created and a new package will be deployed to NPM.
+
+Commits prefixed with `feat` will trigger a minor release, while `fix` or `perf` will trigger a patch release. A commit containing `BREAKING CHANGE` will cause a major release to occur.
+
+Other useful prefixes that will not trigger a release: `build`, `ci`, `docs`, `refactor`, `style` and `test`. More details in the [Angular Contribution Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type).
