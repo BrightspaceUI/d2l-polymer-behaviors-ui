@@ -33,7 +33,7 @@
     "type-detect": "1.0.0"
   },
   "dependencies": {
-    "@brightspace-ui/core": "^1",
+    "@brightspace-ui/core": "^2",
     "@polymer/polymer": "^3.0.0",
     "fastdom": "^1.0.8"
   }
