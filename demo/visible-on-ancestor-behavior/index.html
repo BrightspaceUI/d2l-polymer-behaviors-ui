@@ -1,92 +1,93 @@
-<html>
-<head>
-	<title>D2L Visible on Ancestor Behavior</title>
-	<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<link rel="stylesheet" href="../demo-styles.css">
-	<script type="module" src="../../../@polymer/polymer/polymer-legacy.js"></script>
-	<script type="module" src="./d2l-visible-on-ancestor-component.js"></script>
-	<style>
-		d2l-visible-on-ancestor-component {
-			margin: 20px;
-		}
-		.ancestor-container {
-			background-color: rgba(0,0,0,0.03);
-			border: 1px dashed black;
-			display: inline-block;
-			padding: 1rem;
-			position: relative;
-			min-width: 240px;
-			min-height: 80px;
-		}
-		.ancestor-container::before {
-			box-sizing: border-box;
-			content: 'target 'attr(id);
-			font-size: 0.7rem;
-			height: 100%;
-			left:0;
-			padding: 0.5rem;
-			position: absolute;;
-			text-align: right;
-			top: 0;
-			width: 100%;
-		}
-		.ancestor-container.d2l-visible-on-ancestor-target::before {
-			content: 'target 'attr(id)'; visible-on-ancestor';
-		}
-	</style>
-</head>
-<body unresolved>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<link rel="stylesheet" href="/node_modules/@brightspace-ui/core/components/demo/styles.css" type="text/css">
+		<script type="module">
+			import '@brightspace-ui/core/components/demo/demo-page.js';
+			import './d2l-visible-on-ancestor-component.js';
+		</script>
+		<style>
+			d2l-visible-on-ancestor-component {
+				margin: 20px;
+			}
+			.ancestor-container {
+				background-color: rgba(0,0,0,0.03);
+				border: 1px dashed black;
+				display: inline-block;
+				padding: 1rem;
+				position: relative;
+				min-width: 240px;
+				min-height: 80px;
+			}
+			.ancestor-container::before {
+				box-sizing: border-box;
+				content: 'target 'attr(id);
+				font-size: 0.7rem;
+				height: 100%;
+				left:0;
+				padding: 0.5rem;
+				position: absolute;;
+				text-align: right;
+				top: 0;
+				width: 100%;
+			}
+			.ancestor-container.d2l-visible-on-ancestor-target::before {
+				content: 'target 'attr(id)'; visible-on-ancestor';
+			}
+		</style>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-visible-on-ancestor-behavior">
+			<h2>Component</h2>
+			<d2l-demo-snippet>
+				<d2l-visible-on-ancestor-component id="wc1">focusable 1</d2l-visible-on-ancestor-component>
+				<div id="target1" class="d2l-visible-on-ancestor-target ancestor-container">
+					<d2l-visible-on-ancestor-component id="wc2" visible-on-ancestor>focusable 2</d2l-visible-on-ancestor-component>
+					<d2l-visible-on-ancestor-component id="wc3" >focusable 3</d2l-visible-on-ancestor-component>
+				</div>
+			
+				<div id="target2" class="d2l-visible-on-ancestor-target ancestor-container">
+						<d2l-visible-on-ancestor-component id="wc4">focusable 4</d2l-visible-on-ancestor-component>
+				</div>
+			
+				<div id="target3" class="ancestor-container">
+					<d2l-visible-on-ancestor-component id="wc5">focusable 5</d2l-visible-on-ancestor-component>
+				</div>
+			
+				<div style="margin-top: 1rem;">
+					<button id="moveToTarget2">move to target 2</button>
+					<button id="moveToTarget3">move to target 3</button>
+				</div>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
 
-	<h1>d2l-visible-on-ancestor-behavior</h1>
+		<script type="module">
+			function moveToTarget(id) {
 
-	<h2>Component</h2>
+				var wc = document.getElementById('wc2');
+				var parent = wc.parentNode;
 
-	<d2l-visible-on-ancestor-component id="wc1">focusable 1</d2l-visible-on-ancestor-component>
-	<div id="target1" class="d2l-visible-on-ancestor-target ancestor-container">
-		<d2l-visible-on-ancestor-component id="wc2" visible-on-ancestor>focusable 2</d2l-visible-on-ancestor-component>
-		<d2l-visible-on-ancestor-component id="wc3" >focusable 3</d2l-visible-on-ancestor-component>
-	</div>
+				wc.parentNode.removeChild(wc);
 
-	<div id="target2" class="d2l-visible-on-ancestor-target ancestor-container">
-			<d2l-visible-on-ancestor-component id="wc4">focusable 4</d2l-visible-on-ancestor-component>
-	</div>
+				parent = document.getElementById(id);
 
-	<div id="target3" class="ancestor-container">
-		<d2l-visible-on-ancestor-component id="wc5">focusable 5</d2l-visible-on-ancestor-component>
-	</div>
+				if (!parent.classList.contains('d2l-visible-on-ancestor-target')) {
+					wc.removeAttribute('visible-on-ancestor');
+				}
 
-	<div style="margin-top: 1rem;">
-		<button id="moveToTarget2">move to target 2</button>
-		<button id="moveToTarget3">move to target 3</button>
-	</div>
+				parent.appendChild(wc);
 
-	<script type="module">
-import '@polymer/polymer/polymer-legacy.js';
-import './d2l-visible-on-ancestor-component.js';
-function moveToTarget(id) {
+			}
 
-	var wc = document.getElementById('wc2');
-	var parent = wc.parentNode;
+			document.getElementById('moveToTarget2').addEventListener('click', function() {
+				moveToTarget('target2');
+			});
 
-	wc.parentNode.removeChild(wc);
-
-	parent = document.getElementById(id);
-
-	if (!parent.classList.contains('d2l-visible-on-ancestor-target')) {
-		wc.removeAttribute('visible-on-ancestor');
-	}
-
-	parent.appendChild(wc);
-
-}
-
-document.getElementById('moveToTarget2').addEventListener('click', function() {
-	moveToTarget('target2');
-});
-
-document.getElementById('moveToTarget3').addEventListener('click', function() {
-	moveToTarget('target3');
-});
-</script>
-</body>
+			document.getElementById('moveToTarget3').addEventListener('click', function() {
+				moveToTarget('target3');
+			});
+		</script>
+	</body>
 </html>

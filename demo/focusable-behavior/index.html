@@ -1,27 +1,24 @@
-<html>
-<head>
-	<title>D2L Focusable Behavior</title>
-	<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<link rel="stylesheet" href="../demo-styles.css">
-	<script type="module" src="../../../@polymer/polymer/polymer-legacy.js"></script>
-	<script type="module" src="./d2l-focusable-component.js"></script>
-	<style>
-		a {
-			display: block;
-		}
-	</style>
-</head>
-<body unresolved>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<link rel="stylesheet" href="/node_modules/@brightspace-ui/core/components/demo/styles.css" type="text/css">
+		<script type="module">
+			import '@brightspace-ui/core/components/demo/demo-page.js';
+			import './d2l-focusable-component.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-focusable-behavior">
+			<h2>Component</h2>
+			<d2l-demo-snippet>
+				<button onclick="document.body.querySelector('d2l-focusable-component').focus();">Focus Component</button>
 
-	<h1>d2l-focusable-behavior</h1>
-
-	<h2>Component</h2>
-
-	<button onclick="document.body.querySelector('d2l-focusable-component').focus();">Focus Component</button>
-
-	<d2l-focusable-component id="wc1">
-		<a href="http://www.nasa.gov/topics/solarsystem/index.html">Solar System and Beyond (L2)</a>
-	</d2l-focusable-component>
-
-</body>
+				<d2l-focusable-component id="wc1">
+					<a href="http://www.nasa.gov/topics/solarsystem/index.html">Solar System and Beyond (L2)</a>
+				</d2l-focusable-component>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+	</body>
 </html>
