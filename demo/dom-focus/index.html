@@ -1,132 +1,130 @@
-<html>
-<head>
-	<title>D2L DOM Focus</title>
-	<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<link rel="stylesheet" href="../demo-styles.css">
-	<script type="module" src="../../../@polymer/polymer/polymer-legacy.js"></script>
-	<script type="module" src="../../d2l-dom-focus.js"></script>
-	<script type="module" src="./d2l-dom-focus-component.js"></script>
-</head>
-<body unresolved>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<link rel="stylesheet" href="/node_modules/@brightspace-ui/core/components/demo/styles.css" type="text/css">
+		<script type="module">
+			import '@brightspace-ui/core/components/demo/demo-page.js';
+			import '../../d2l-dom-focus.js';
+			import './d2l-dom-focus-component.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-dom-focus">
+			
+			<h3>Dom Focus</h3>
+			<d2l-demo-snippet>
+				<h3>focus order</h3>
+				<div>
+					<button id="logForwardOrder">Log Forward Order</button>
+					<button id="logReverseOrder">Log Reverse Order</button>
+				</div>
 
-	<h1>d2l-dom-focus</h1>
+				<h3>getNextFocusable</h3>
+				<div>
+					<button id="focusNextFromLight1">Next from Light 1</button>
+					<button id="focusNextFromWC1">Next from WC</button>
+					<button id="focusNextFromShadow1">Next from Shadow 1</button>
+					<button id="focusNextFromLight2">Next from Light 2</button>
+					<button id="focusNextFromShadow2">Next from Shadow 2</button>
+				</div>
 
-	<h2>focus order</h2>
+				<h3>getPreviousFocusable</h3>
+				<div>
+					<button id="focusPreviousFromLight3">Previous from Light 3</button>
+					<button id="focusPreviousFromShadow2">Previous from Shadow 2</button>
+					<button id="focusPreviousFromLight2">Previous from Light 2</button>
+					<button id="focusPreviousFromShadow1">Previous from Shadow 1</button>
+					<button id="focusPreviousFromWC1">Previous from WC</button>
+				</div>
 
-	<div style="width: 60%;">
-		<button id="logForwardOrder">Log Forward Order</button>
-		<button id="logReverseOrder">Log Reverse Order</button>
-	</div>
+				<h3>Component</h3>
+				<div id="fixture" style="width: 60%;">
 
-	<h2>getNextFocusable</h2>
+					<a id="light1" href="http://www.nasa.gov/topics/technology/index.html">Technology Drives Exploration (L1)</a>
+					<d2l-dom-focus-component id="wc1">
+						<a id="light2" href="http://www.nasa.gov/topics/solarsystem/index.html">Solar System and Beyond (L2)</a>
+					</d2l-dom-focus-component>
+					<a id="light3" href="http://www.nasa.gov/topics/journeytomars/index.html">Journey to Mars (L3)</a>
+			
+				</div>
+				<div id="endFixture"></div>
+			</d2l-demo-snippet>
 
-	<div style="width: 60%;">
-		<button id="focusNextFromLight1">Next from Light 1</button>
-		<button id="focusNextFromWC1">Next from WC</button>
-		<button id="focusNextFromShadow1">Next from Shadow 1</button>
-		<button id="focusNextFromLight2">Next from Light 2</button>
-		<button id="focusNextFromShadow2">Next from Shadow 2</button>
-	</div>
+		</d2l-demo-page>
+		<script type="module">
+			function focusNext(target) {
+				var focusable =	D2L.Dom.Focus.getNextFocusable(target);
+				console.log(focusable); /* eslint-disable-line no-console */
+				focusable.focus();
+			}
 
-	<h2>getPreviousFocusable</h2>
+			function focusPrevious(target) {
+				var focusable =	D2L.Dom.Focus.getPreviousFocusable(target);
+				console.log(focusable); /* eslint-disable-line no-console */
+				focusable.focus();
+			}
 
-	<div style="width: 60%;">
-		<button id="focusPreviousFromLight3">Previous from Light 3</button>
-		<button id="focusPreviousFromShadow2">Previous from Shadow 2</button>
-		<button id="focusPreviousFromLight2">Previous from Light 2</button>
-		<button id="focusPreviousFromShadow1">Previous from Shadow 1</button>
-		<button id="focusPreviousFromWC1">Previous from WC</button>
-	</div>
+			document.getElementById('focusNextFromLight1').addEventListener('click', function() {
+				focusNext(document.querySelector('#light1'));
+			});
 
-	<h2>Component</h2>
+			document.getElementById('focusNextFromWC1').addEventListener('click', function() {
+				focusNext(document.querySelector('#wc1'));
+			});
 
-	<div id="fixture" style="width: 60%;">
+			document.getElementById('focusNextFromShadow1').addEventListener('click', function() {
+				focusNext(document.querySelector('#wc1').getShadow1());
+			});
 
-		<a id="light1" href="http://www.nasa.gov/topics/technology/index.html">Technology Drives Exploration (L1)</a>
-		<d2l-dom-focus-component id="wc1">
-			<a id="light2" href="http://www.nasa.gov/topics/solarsystem/index.html">Solar System and Beyond (L2)</a>
-		</d2l-dom-focus-component>
-		<a id="light3" href="http://www.nasa.gov/topics/journeytomars/index.html">Journey to Mars (L3)</a>
+			document.getElementById('focusNextFromLight2').addEventListener('click', function() {
+				focusNext(document.querySelector('#light2'));
+			});
 
-	</div>
+			document.getElementById('focusNextFromShadow2').addEventListener('click', function() {
+				focusNext(document.querySelector('#wc1').getShadow2());
+			});
 
-	<div id="endFixture"></div>
+			document.getElementById('focusPreviousFromLight3').addEventListener('click', function() {
+				focusPrevious(document.querySelector('#light3'));
+			});
 
-	<script type="module">
-import '@polymer/polymer/polymer-legacy.js';
-import '../../d2l-dom-focus.js';
-import './d2l-dom-focus-component.js';
-function focusNext(target) {
-	var focusable =	D2L.Dom.Focus.getNextFocusable(target);
-	console.log(focusable); /* eslint-disable-line no-console */
-	focusable.focus();
-}
+			document.getElementById('focusPreviousFromShadow2').addEventListener('click', function() {
+				focusPrevious(document.querySelector('#wc1').getShadow2());
+			});
 
-function focusPrevious(target) {
-	var focusable =	D2L.Dom.Focus.getPreviousFocusable(target);
-	console.log(focusable); /* eslint-disable-line no-console */
-	focusable.focus();
-}
+			document.getElementById('focusPreviousFromLight2').addEventListener('click', function() {
+				focusPrevious(document.querySelector('#light2'));
+			});
 
-document.getElementById('focusNextFromLight1').addEventListener('click', function() {
-	focusNext(document.querySelector('#light1'));
-});
+			document.getElementById('focusPreviousFromShadow1').addEventListener('click', function() {
+				focusPrevious(document.querySelector('#wc1').getShadow1());
+			});
 
-document.getElementById('focusNextFromWC1').addEventListener('click', function() {
-	focusNext(document.querySelector('#wc1'));
-});
+			document.getElementById('focusPreviousFromWC1').addEventListener('click', function() {
+				focusPrevious(document.querySelector('#wc1'));
+			});
 
-document.getElementById('focusNextFromShadow1').addEventListener('click', function() {
-	focusNext(document.querySelector('#wc1').getShadow1());
-});
+			document.getElementById('logForwardOrder').addEventListener('click', function() {
+				var focusable = D2L.Dom.Focus.getNextFocusable(document.getElementById('fixture'));
+				var count = 0;
+				while (focusable) {
+					count += 1;
+					console.log(count, focusable); /* eslint-disable-line no-console */
+					focusable = D2L.Dom.Focus.getNextFocusable(focusable);
+				}
+			});
 
-document.getElementById('focusNextFromLight2').addEventListener('click', function() {
-	focusNext(document.querySelector('#light2'));
-});
-
-document.getElementById('focusNextFromShadow2').addEventListener('click', function() {
-	focusNext(document.querySelector('#wc1').getShadow2());
-});
-
-document.getElementById('focusPreviousFromLight3').addEventListener('click', function() {
-	focusPrevious(document.querySelector('#light3'));
-});
-
-document.getElementById('focusPreviousFromShadow2').addEventListener('click', function() {
-	focusPrevious(document.querySelector('#wc1').getShadow2());
-});
-
-document.getElementById('focusPreviousFromLight2').addEventListener('click', function() {
-	focusPrevious(document.querySelector('#light2'));
-});
-
-document.getElementById('focusPreviousFromShadow1').addEventListener('click', function() {
-	focusPrevious(document.querySelector('#wc1').getShadow1());
-});
-
-document.getElementById('focusPreviousFromWC1').addEventListener('click', function() {
-	focusPrevious(document.querySelector('#wc1'));
-});
-
-document.getElementById('logForwardOrder').addEventListener('click', function() {
-	var focusable = D2L.Dom.Focus.getNextFocusable(document.getElementById('fixture'));
-	var count = 0;
-	while (focusable) {
-		count += 1;
-		console.log(count, focusable); /* eslint-disable-line no-console */
-		focusable = D2L.Dom.Focus.getNextFocusable(focusable);
-	}
-});
-
-document.getElementById('logReverseOrder').addEventListener('click', function() {
-	var focusable = D2L.Dom.Focus.getPreviousFocusable(document.getElementById('endFixture'));
-	var count = 0;
-	while (focusable && focusable.tagName !== 'BUTTON') {
-		count += 1;
-		console.log(count, focusable); /* eslint-disable-line no-console */
-		focusable = D2L.Dom.Focus.getPreviousFocusable(focusable);
-	}
-});
-</script>
-</body>
+			document.getElementById('logReverseOrder').addEventListener('click', function() {
+				var focusable = D2L.Dom.Focus.getPreviousFocusable(document.getElementById('endFixture'));
+				var count = 0;
+				while (focusable && focusable.tagName !== 'BUTTON') {
+					count += 1;
+					console.log(count, focusable); /* eslint-disable-line no-console */
+					focusable = D2L.Dom.Focus.getPreviousFocusable(focusable);
+				}
+			});
+		</script>
+	</body>
 </html>

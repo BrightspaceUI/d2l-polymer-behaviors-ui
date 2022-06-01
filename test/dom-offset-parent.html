@@ -4,7 +4,6 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 		<title>d2l-dom get-offset-parent tests</title>
-		<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 		<script src="../../wct-browser-legacy/browser.js"></script>
 		<script type="module" src="../d2l-dom.js"></script>
 		<style>
@@ -205,6 +204,14 @@ describe('d2l-dom', function() {
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
 class TestWrapper extends PolymerElement {
+	static get properties() {
+		return {
+			wrapperId: {
+				type: String,
+				value: 'notExpected'
+			}
+		};
+	}
 	static get template() {
 		return html`
 			<style>
@@ -216,14 +223,6 @@ class TestWrapper extends PolymerElement {
 				<slot></slot>
 			</div>
 		`;
-	}
-	static get properties() {
-		return {
-			wrapperId: {
-				type: String,
-				value: 'notExpected'
-			}
-		};
 	}
 }
 

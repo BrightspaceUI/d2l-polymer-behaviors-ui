@@ -1,26 +1,16 @@
 # d2l-polymer-behaviors
-[![Bower version][bower-image]][bower-url]
-[![Build status][ci-image]][ci-url]
 
 Shared [Polymer](https://www.polymer-project.org/1.0/)-based behaviors and modules for implementing and consuming web components.
 
 ## Installation
 
-`d2l-polymer-behaviors` can be installed from [Bower][bower-url]:
+Install from NPM:
+
 ```shell
-bower install d2l-polymer-behaviors
+npm install d2l-polymer-behaviors
 ```
 
 ## Usage
-
-Include the [webcomponents.js](http://webcomponents.org/polyfills/) "lite" polyfill (for browsers who don't natively support web components), then import the component or scripts as needed.
-
-```html
-<head>
-	<script src="https://s.brightspace.com/lib/webcomponentsjs/0.7.21/webcomponents-lite.min.js"></script>
-	<link rel="import" href="../d2l-polymer-behaviors/d2l-dom-focus.html">
-</head>
-```
 
 #### Methods
 
@@ -168,22 +158,41 @@ The consumer of `d2l-example` adds the `d2l-visible-on-ancestor-target` class to
 </div>
 ```
 
-### Usage in Production
+## Versioning & Releasing
 
-In production, it's recommended to use a build tool like [Vulcanize](https://github.com/Polymer/vulcanize) to combine all your web components into a single import file. [More from the Polymer Docs: Optimize for Production](https://www.polymer-project.org/1.0/tools/optimize-for-production.html)...
+> TL;DR: Commits prefixed with `fix:` and `feat:` will trigger patch and minor releases when merged to `main`. Read on for more details...
 
-## Coding styles
+The [semantic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/main/semantic-release) is called from the `release.yml` GitHub Action workflow to handle version changes and releasing.
 
-See the [VUI Best Practices & Style Guide](https://github.com/Brightspace/valence-ui-docs/wiki/Best-Practices-&-Style-Guide) for information on VUI naming conventions, plus information about the [EditorConfig](http://editorconfig.org) rules used in this repo.
+### Version Changes
 
-![Build status](https://github.com/BrightspaceUI/progress/workflows/CI/badge.svg)
+All version changes should obey [semantic versioning](https://semver.org/) rules:
+1. **MAJOR** version when you make incompatible API changes,
+2. **MINOR** version when you add functionality in a backwards compatible manner, and
+3. **PATCH** version when you make backwards compatible bug fixes.
 
-## Versioning
+The next version number will be determined from the commit messages since the previous release. Our semantic-release configuration uses the [Angular convention](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular) when analyzing commits:
+* Commits which are prefixed with `fix:` or `perf:` will trigger a `patch` release. Example: `fix: validate input before using`
+* Commits which are prefixed with `feat:` will trigger a `minor` release. Example: `feat: add toggle() method`
+* To trigger a MAJOR release, include `BREAKING CHANGE:` with a space or two newlines in the footer of the commit message
+* Other suggested prefixes which will **NOT** trigger a release: `build:`, `ci:`, `docs:`, `style:`, `refactor:` and `test:`. Example: `docs: adding README for new component`
 
-All version changes should obey [semantic versioning](https://semver.org/) rules.
+To revert a change, add the `revert:` prefix to the original commit message. This will cause the reverted change to be omitted from the release notes. Example: `revert: fix: validate input before using`.
 
-Releases use the [semantic-release](https://semantic-release.gitbook.io/) tooling and the [angular preset](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular) for commit message syntax. Upon release, the version in `package.json` is updated, a tag and GitHub release is created and a new package will be deployed to NPM.
+### Releases
 
-Commits prefixed with `feat` will trigger a minor release, while `fix` or `perf` will trigger a patch release. A commit containing `BREAKING CHANGE` will cause a major release to occur.
+When a release is triggered, it will:
+* Update the version in `package.json`
+* Tag the commit
+* Create a GitHub release (including release notes)
+* Deploy a new package to NPM
 
-Other useful prefixes that will not trigger a release: `build`, `ci`, `docs`, `refactor`, `style` and `test`. More details in the [Angular Contribution Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type).
+### Releasing from Maintenance Branches
+
+Occasionally you'll want to backport a feature or bug fix to an older release. `semantic-release` refers to these as [maintenance branches](https://semantic-release.gitbook.io/semantic-release/usage/workflow-configuration#maintenance-branches).
+
+Maintenance branch names should be of the form: `+([0-9])?(.{+([0-9]),x}).x`.
+
+Regular expressions are complicated, but this essentially means branch names should look like:
+* `1.15.x` for patch releases on top of the `1.15` release (after version `1.16` exists)
+* `2.x` for feature releases on top of the `2` release (after version `3` exists)
