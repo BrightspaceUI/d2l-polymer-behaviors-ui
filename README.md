@@ -1,4 +1,4 @@
-# d2l-polymer-behaviors
+# @brightspace-ui/polymer-behaviors
 
 Shared [Polymer](https://www.polymer-project.org/1.0/)-based behaviors and modules for implementing and consuming web components.
 
@@ -7,7 +7,7 @@ Shared [Polymer](https://www.polymer-project.org/1.0/)-based behaviors and modul
 Install from NPM:
 
 ```shell
-npm install d2l-polymer-behaviors
+npm install @brightspace-ui/polymer-behaviors
 ```
 
 ## Usage
