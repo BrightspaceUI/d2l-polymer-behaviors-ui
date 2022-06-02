@@ -16,4 +16,4 @@ jobs:
       - name: Lint
         run: npm run test:lint
       - name: Unit Tests
-        run: run: npx web-test-runner --config web-test-runner.config.js --group default --playwright --browsers chromium firefox webkit
+        run: npx web-test-runner --config web-test-runner.config.js --group default --playwright --browsers chromium firefox webkit
