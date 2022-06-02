@@ -1,78 +1,38 @@
-<!doctype html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>d2l-focusable-arrowkeys-behavior tests</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-		<script src="../../wct-browser-legacy/browser.js"></script>
-		<script type="module" src="../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
-		<script type="module" src="../d2l-dom-focus.js"></script>
-		<script type="module" src="./focusable-arrowkeys-behavior-components.js"></script>
-	</head>
-	<body>
-
-		<test-fixture id="simpleFixture">
-			<template>
-				<d2l-focusable-arrowkeys-test></d2l-focusable-arrowkeys-test>
-			</template>
-		</test-fixture>
-
-		<div dir="rtl">
-			<test-fixture id="simpleFixtureRtl">
-				<template>
-					<d2l-focusable-arrowkeys-test></d2l-focusable-arrowkeys-test>
-				</template>
-			</test-fixture>
-		</div>
-
-		<script type="module">
-import '@polymer/iron-test-helpers/iron-test-helpers.js';
 import '../d2l-dom-focus.js';
 import './focusable-arrowkeys-behavior-components.js';
+import { expect, fixture, html } from '@open-wc/testing';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
-describe('d2l-focusable-arrowkeys-behavior', function() {
+import { keyDown } from '@brightspace-ui/core/tools/dom-test-helpers.js';
 
-	var simpleFixture, focusables;
+describe('d2l-focusable-arrowkeys-behavior', () => {
+	let simpleFixture, focusables;
 
-	var testKeyInteractions = function(keyInteractions) {
-
-		for (var i = 0; i < keyInteractions.length; i++) {
-
-			(function(i) {
-
-				it(keyInteractions[i].name, function(done) {
-					simpleFixture.arrowKeyFocusablesOnBeforeFocus = function(elem) {
-						return new Promise(function(resolve) {
-							expect(elem).to.equal(focusables[keyInteractions[i].endIndex]);
-							resolve();
-						});
-					};
-					focusables[keyInteractions[i].startIndex].focus();
-					focusables[keyInteractions[i].endIndex].addEventListener('focus', function() {
-						expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteractions[i].endIndex]);
-						done();
+	const testKeyInteractions = (keyInteractions) => {
+		keyInteractions.forEach((keyInteraction) => {
+			it(keyInteraction.name, (done) => {
+				simpleFixture.arrowKeyFocusablesOnBeforeFocus = (elem) => {
+					return new Promise((resolve) => {
+						expect(elem).to.equal(focusables[keyInteraction.endIndex]);
+						resolve();
 					});
-					MockInteractions.keyDownOn(focusables[keyInteractions[i].startIndex], keyInteractions[i].keyCode);
+				};
+				focusables[keyInteraction.startIndex].focus();
+				focusables[keyInteraction.endIndex].addEventListener('focus', () => {
+					expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteraction.endIndex]);
+					done();
 				});
-
-			}(i));
-
-		}
-
-	};
-
-	describe('ltr', function() {
-
-		beforeEach(function(done) {
-			simpleFixture = fixture('simpleFixture');
-			simpleFixture.arrowKeyFocusablesProvider().then(function(result) {
-				focusables = result;
-				done();
+				keyDown(focusables[keyInteraction.startIndex], keyInteraction.keyCode);
 			});
 		});
+	};
 
-		describe('left-right', function() {
+	describe('ltr', () => {
+		beforeEach(async() => {
+			simpleFixture = await fixture(html`<d2l-focusable-arrowkeys-test></d2l-focusable-arrowkeys-test>`);
+			focusables = await simpleFixture.arrowKeyFocusablesProvider();
+		});
 
+		describe('left-right', () => {
 			testKeyInteractions([
 				{ name: 'focuses on next focusable when Right arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 39 },
 				{ name: 'focuses on previous focusable when Left arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 37 },
@@ -84,11 +44,9 @@ describe('d2l-focusable-arrowkeys-behavior', function() {
 
 		});
 
-		describe('up-down', function() {
-
-			beforeEach(function(done) {
+		describe('up-down', () => {
+			beforeEach(() => {
 				simpleFixture.arrowKeyFocusablesDirection = 'updown';
-				done();
 			});
 
 			testKeyInteractions([
@@ -102,31 +60,24 @@ describe('d2l-focusable-arrowkeys-behavior', function() {
 
 		});
 
-		describe('nowrap - up-down-left-right', function() {
-
-			beforeEach(function(done) {
+		describe('nowrap - up-down-left-right', () => {
+			beforeEach(() => {
 				simpleFixture.arrowKeyFocusablesDirection = 'updownleftright';
 				simpleFixture.arrowKeyFocusablesNoWrap = true;
-				done();
 			});
 
-			var testNoWrap = function(keyInteractions) {
-				for (var i = 0; i < keyInteractions.length; i++) {
+			const testNoWrap = (keyInteractions) => {
+				keyInteractions.forEach((keyInteraction) => {
+					it(keyInteraction.name, (done) => {
+						focusables[keyInteraction.startIndex].focus();
+						keyDown(focusables[[keyInteraction.startIndex]], keyInteraction.keyCode);
 
-					(function(i) {
-
-						it(keyInteractions[i].name, function(done) {
-							focusables[keyInteractions[i].startIndex].focus();
-							MockInteractions.keyDownOn(focusables[[keyInteractions[i].startIndex]], keyInteractions[i].keyCode);
-
-							afterNextRender(simpleFixture, function() {
-								expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteractions[i].startIndex]);
-								done();
-							});
+						afterNextRender(simpleFixture, () => {
+							expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteraction.startIndex]);
+							done();
 						});
-
-					}(i));
-				}
+					});
+				});
 			};
 
 			testNoWrap([
@@ -140,18 +91,14 @@ describe('d2l-focusable-arrowkeys-behavior', function() {
 
 	});
 
-	describe('rtl', function() {
-
-		beforeEach(function(done) {
-			simpleFixture = fixture('simpleFixtureRtl');
-			simpleFixture.arrowKeyFocusablesProvider().then(function(result) {
-				focusables = result;
-				done();
-			});
+	describe('rtl', () => {
+		beforeEach(async() => {
+			const fullFixture = await fixture(html`<div dir="rtl"><d2l-focusable-arrowkeys-test></d2l-focusable-arrowkeys-test></div>`);
+			simpleFixture = fullFixture.querySelector('d2l-focusable-arrowkeys-test');
+			focusables = await simpleFixture.arrowKeyFocusablesProvider();
 		});
 
-		describe('left-right', function() {
-
+		describe('left-right', () => {
 			testKeyInteractions([
 				{ name: 'focuses on previous focusable when Right arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 39 },
 				{ name: 'focuses on next focusable when Left arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 37 },
@@ -160,12 +107,8 @@ describe('d2l-focusable-arrowkeys-behavior', function() {
 				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
 				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
 			]);
-
 		});
 
 	});
 
 });
-</script>
-	</body>
-</html>
