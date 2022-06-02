@@ -15,8 +15,5 @@ jobs:
         run: npm install
       - name: Lint
         run: npm run test:lint
-      - name: Polymer Tests (SauceLabs)
-        env:
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_DESIRE2LEARN }}
-          SAUCE_USERNAME: Desire2Learn
-        run: npm run test:polymer:sauce
+      - name: Unit Tests
+        run: run: npx web-test-runner --config web-test-runner.config.js --group default --playwright --browsers chromium firefox webkit
