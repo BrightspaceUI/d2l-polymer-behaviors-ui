@@ -14,9 +14,8 @@ describe('d2l-focusable-arrowkeys-behavior', () => {
 						resolve();
 					});
 				};
-				const e = oneEvent(focusables[keyInteraction.endIndex], 'focus');
 				sendKeysElem(focusables[keyInteraction.startIndex], 'press', keyInteraction.key);
-				await e;
+				await oneEvent(focusables[keyInteraction.endIndex], 'focus');
 				expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteraction.endIndex]);
 			});
 		});
@@ -65,9 +64,8 @@ describe('d2l-focusable-arrowkeys-behavior', () => {
 			const testNoWrap = (keyInteractions) => {
 				keyInteractions.forEach((keyInteraction) => {
 					it(keyInteraction.name, async() => {
-						const e = oneEvent(focusables[keyInteraction.startIndex], 'focus');
-						await sendKeysElem(focusables[keyInteraction.startIndex], 'press', keyInteraction.key);
-						await e;
+						sendKeysElem(focusables[keyInteraction.startIndex], 'press', keyInteraction.key);
+						await oneEvent(focusables[keyInteraction.startIndex], 'focus');
 						expect(D2L.Dom.Focus.getComposedActiveElement()).to.equal(focusables[keyInteraction.startIndex]);
 					});
 				});
