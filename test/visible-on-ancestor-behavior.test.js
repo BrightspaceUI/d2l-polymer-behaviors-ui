@@ -1,5 +1,5 @@
 import './visible-on-ancestor-behavior-components.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-visible-on-ancestor-behavior', () => {
 	let voaFixture;

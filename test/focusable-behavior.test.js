@@ -1,6 +1,6 @@
 import '../d2l-dom-focus.js';
 import './focusable-behavior-components.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('d2l-focusable-behavior', () => {
 	let simpleFixture;

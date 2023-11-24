@@ -128,6 +128,7 @@ D2L.PolymerBehaviors.FocusableArrowKeysBehavior = {
 		var target = e.target;
 		if (this.arrowKeyFocusablesDirection.indexOf('left') >= 0 && e.keyCode === this.__keyCodes.LEFT) {
 			fastdom.measure(function() {
+				if (!this.isConnected) return;
 				if (getComputedStyle(this).direction === 'rtl') {
 					this.__focusNext(target);
 				} else {
@@ -136,6 +137,7 @@ D2L.PolymerBehaviors.FocusableArrowKeysBehavior = {
 			}.bind(this));
 		} else if (this.arrowKeyFocusablesDirection.indexOf('right') >= 0 && e.keyCode === this.__keyCodes.RIGHT) {
 			fastdom.measure(function() {
+				if (!this.isConnected) return;
 				if (getComputedStyle(this).direction === 'rtl') {
 					this.__focusPrevious(target);
 				} else {

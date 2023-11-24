@@ -1,5 +1,5 @@
 import '../d2l-id.js';
-import { expect } from '@open-wc/testing';
+import { expect } from '@brightspace-ui/testing';
 
 describe('d2l-id', () => {
 
