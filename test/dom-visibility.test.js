@@ -1,6 +1,6 @@
 import '../d2l-dom-visibility.js';
 import './dom-visibility-components.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 
 describe('d2l-dom-visibility', () => {

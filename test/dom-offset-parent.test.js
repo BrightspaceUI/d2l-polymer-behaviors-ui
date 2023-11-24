@@ -1,5 +1,5 @@
 import '../d2l-dom.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 import { PolymerElement, html as polymerHtml } from '@polymer/polymer/polymer-element.js';
 
 class TestWrapper extends PolymerElement {

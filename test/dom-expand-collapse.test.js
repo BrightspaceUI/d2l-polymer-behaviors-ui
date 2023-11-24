@@ -1,5 +1,5 @@
 import '../d2l-dom-expand-collapse.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-dom-expand-collapse', () => {
 	describe('collapse', () => {

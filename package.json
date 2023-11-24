@@ -8,9 +8,8 @@
   "name": "@brightspace-ui/polymer-behaviors",
   "scripts": {
     "start": "web-dev-server --node-resolve --watch",
-    "test": "npm run test:lint && npm run test:headless",
-    "test:headless": "web-test-runner --group default",
-    "test:headless:watch": "web-test-runner --group default --watch",
+    "test": "npm run test:lint && npm run test:unit",
+    "test:unit": "d2l-test-runner",
     "test:lint": "npm run test:lint:js",
     "test:lint:js": "eslint . --ext .js,.html test/**/*.js demo/**/*.js demo/**/*.html"
   },
@@ -19,15 +18,9 @@
   "devDependencies": {
     "@babel/core": "^7",
     "@babel/eslint-parser": "^7",
-    "@open-wc/testing": "^3",
+    "@brightspace-ui/testing": "^1",
     "@web/dev-server": "^0.1",
-    "@web/test-runner": "^0.13",
     "eslint": "^8",
-    "eslint-config-brightspace": "^0.16",
-    "eslint-plugin-html": "^6",
-    "eslint-plugin-import": "^2",
-    "eslint-plugin-lit": "^1",
-    "eslint-plugin-sort-class-members": "^1",
     "sinon": "^14"
   },
   "version": "3.2.0",
